@@ -31,7 +31,7 @@ try
     app.MapGet("/", () => $"Welcome to {builder.Environment.ApplicationName}!");
 
     app.MapCustomersAPI();
-    
+
     // Configure the HTTP request pipeline.
     //if (app.Environment.IsDevelopment())
     //{
@@ -51,7 +51,7 @@ try
 
     app.UseEndpoints(endpoints =>
     {
-        endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+        endpoints.MapHealthChecks("/hc", new HealthCheckOptions
         {
             Predicate = _ => true,
             ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
@@ -64,7 +64,7 @@ try
 }
 catch (Exception ex)
 {
-    string type = ex.GetType().Name;
+    var type = ex.GetType().Name;
     if (type.Equals("StopTheHostException", StringComparison.Ordinal)) throw;
 
     Log.Fatal(ex, $"Unhandled exception: {ex.Message}");

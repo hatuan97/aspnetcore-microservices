@@ -10,16 +10,16 @@ namespace Inventory.Grpc.Extensions;
 
 public static class ServiceExtensions
 {
-    internal static IServiceCollection AddConfigurationSettings(this IServiceCollection services, 
+    internal static IServiceCollection AddConfigurationSettings(this IServiceCollection services,
         IConfiguration configuration)
     {
         var databaseSettings = configuration.GetSection(nameof(MongoDbSettings))
             .Get<MongoDbSettings>();
         services.AddSingleton(databaseSettings);
-        
+
         return services;
     }
-    
+
     private static string getMongoConnectionString(this IServiceCollection services)
     {
         var settings = services.GetOptions<MongoDbSettings>(nameof(MongoDbSettings));
@@ -35,7 +35,7 @@ public static class ServiceExtensions
     public static void ConfigureMongoDbClient(this IServiceCollection services)
     {
         services.AddSingleton<IMongoClient>(
-            new MongoClient(getMongoConnectionString(services)))
+                new MongoClient(getMongoConnectionString(services)))
             .AddScoped(x => x.GetService<IMongoClient>()?.StartSession());
     }
 
@@ -52,7 +52,7 @@ public static class ServiceExtensions
         services.AddHealthChecks()
             .AddMongoDb(databaseSettings.ConnectionString,
                 name: "Inventory MongoDb Health",
-                failureStatus: HealthStatus.Degraded)
+                HealthStatus.Degraded)
             .AddCheck("Inventory Grpc Health", () => HealthCheckResult.Healthy());
     }
 }

@@ -6,8 +6,8 @@ namespace Inventory.Grpc.Extensions;
 
 public class StatusService : BackgroundService
 {
-    private readonly HealthServiceImpl _healthService;
     private readonly HealthCheckService _healthCheckService;
+    private readonly HealthServiceImpl _healthService;
 
     public StatusService(HealthServiceImpl healthService, HealthCheckService healthCheckService)
     {
@@ -22,13 +22,11 @@ public class StatusService : BackgroundService
             var health = await _healthCheckService.CheckHealthAsync(stoppingToken);
 
             foreach (var h in health.Entries)
-            {
                 _healthService.SetStatus(h.Key,
                     health.Status == HealthStatus.Healthy
                         ? HealthCheckResponse.Types.ServingStatus.Serving
                         : HealthCheckResponse.Types.ServingStatus.NotServing);
-            }
-            
+
             await Task.Delay(TimeSpan.FromSeconds(15), stoppingToken);
         }
     }

@@ -11,8 +11,14 @@ public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbCon
     {
         _context = context;
     }
-    
-    public void Dispose() => _context.Dispose();
 
-    public Task<int> CommitAsync() => _context.SaveChangesAsync();
+    public void Dispose()
+    {
+        _context.Dispose();
+    }
+
+    public Task<int> CommitAsync()
+    {
+        return _context.SaveChangesAsync();
+    }
 }

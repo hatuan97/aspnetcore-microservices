@@ -9,9 +9,9 @@ namespace Ordering.API.Application.IntegrationEvents.EventsHandler;
 
 public class BasketCheckoutEventHandler : IConsumer<BasketCheckoutEvent>
 {
-    private readonly IMediator _mediator;
-    private readonly IMapper _mapper;
     private readonly ILogger _logger;
+    private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
 
     public BasketCheckoutEventHandler(IMediator mediator, IMapper mapper, ILogger logger)
     {

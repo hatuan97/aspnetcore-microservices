@@ -4,22 +4,23 @@ using Saga.Orchestrator.HttpRepository.Interfaces;
 using Shared.DTOs.Basket;
 using Shared.DTOs.Inventory;
 using Shared.DTOs.Order;
+using Stateless;
 using ILogger = Serilog.ILogger;
 
 namespace Saga.Orchestrator.OrderManager;
 
 public class SagaOrderManager : ISagaOrderManager<BasketCheckoutDto, OrderResponse>
 {
-    private readonly IOrderHttpRepository _orderHttpRepository;
     private readonly IBasketHttpRepository _basketHttpRepository;
     private readonly IInventoryHttpRepository _inventoryHttpRepository;
-    private readonly IMapper _mapper;
     private readonly ILogger _logger;
-    
-    public SagaOrderManager(IOrderHttpRepository orderHttpRepository, 
-        IBasketHttpRepository basketHttpRepository, 
-        IInventoryHttpRepository inventoryHttpRepository, 
-        IMapper mapper, 
+    private readonly IMapper _mapper;
+    private readonly IOrderHttpRepository _orderHttpRepository;
+
+    public SagaOrderManager(IOrderHttpRepository orderHttpRepository,
+        IBasketHttpRepository basketHttpRepository,
+        IInventoryHttpRepository inventoryHttpRepository,
+        IMapper mapper,
         ILogger logger)
     {
         _orderHttpRepository = orderHttpRepository;
@@ -28,11 +29,11 @@ public class SagaOrderManager : ISagaOrderManager<BasketCheckoutDto, OrderRespon
         _mapper = mapper;
         _logger = logger;
     }
-    
+
     public OrderResponse CreateOrder(BasketCheckoutDto input)
     {
         var orderStateMachine =
-            new Stateless.StateMachine<EOrderTransactionState, EOrderAction>(EOrderTransactionState.NotStarted);
+            new StateMachine<EOrderTransactionState, EOrderAction>(EOrderTransactionState.NotStarted);
 
         long orderId = -1;
         CartDto cart = null;
@@ -72,7 +73,7 @@ public class SagaOrderManager : ISagaOrderManager<BasketCheckoutDto, OrderRespon
         orderStateMachine.Configure(EOrderTransactionState.OrderGot)
             .PermitDynamic(EOrderAction.UpdateInventory, () =>
             {
-                var salesOrder = new SalesOrderDto()
+                var salesOrder = new SalesOrderDto
                 {
                     OrderNo = addedOrder.DocumentNo,
                     SaleItems = _mapper.Map<List<SaleItemDto>>(cart.Items)
@@ -101,14 +102,14 @@ public class SagaOrderManager : ISagaOrderManager<BasketCheckoutDto, OrderRespon
             }).OnEntry(() => orderStateMachine.Fire(EOrderAction.DeleteInventory));
 
         orderStateMachine.Fire(EOrderAction.GetBasket);
-        
+
         return new OrderResponse(orderStateMachine.State == EOrderTransactionState.BasketDeleted);
     }
 
     public OrderResponse RollbackOrder(string username, string documentNo, long orderId)
     {
         var orderStateMachine =
-            new Stateless.StateMachine<EOrderTransactionState, EOrderAction>(EOrderTransactionState.RollbackInventory);
+            new StateMachine<EOrderTransactionState, EOrderAction>(EOrderTransactionState.RollbackInventory);
 
         //1. Delete Inventory by Document No
         orderStateMachine.Configure(EOrderTransactionState.RollbackInventory)
@@ -117,7 +118,7 @@ public class SagaOrderManager : ISagaOrderManager<BasketCheckoutDto, OrderRespon
                 _inventoryHttpRepository.DeleteOrderByDocumentNo(documentNo);
                 return EOrderTransactionState.InventoryRollback;
             });
-        
+
         //2. Delete Order by order id
         orderStateMachine.Configure(EOrderTransactionState.InventoryRollback)
             .PermitDynamic(EOrderAction.DeleteOrder, () =>
@@ -125,7 +126,7 @@ public class SagaOrderManager : ISagaOrderManager<BasketCheckoutDto, OrderRespon
                 var result = _orderHttpRepository.DeleteOrder(orderId).Result;
                 return result ? EOrderTransactionState.OrderDeleted : EOrderTransactionState.OrderDeletedFailed;
             }).OnEntry(() => orderStateMachine.Fire(EOrderAction.DeleteOrder));
-        
+
         orderStateMachine.Fire(EOrderAction.DeleteInventory);
 
         return new OrderResponse(orderStateMachine.State == EOrderTransactionState.InventoryRollback);

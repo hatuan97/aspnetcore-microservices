@@ -7,24 +7,42 @@ namespace Infrastructure.ScheduledJobs;
 public class HangfireService : IScheduledJobService
 {
     public string Enqueue(Expression<Action> functionCall)
-        => BackgroundJob.Enqueue(functionCall);
+    {
+        return BackgroundJob.Enqueue(functionCall);
+    }
 
     public string Enqueue<T>(Expression<Action<T>> functionCall)
-        => BackgroundJob.Enqueue<T>(functionCall);
+    {
+        return BackgroundJob.Enqueue(functionCall);
+    }
 
     public string Schedule(Expression<Action> functionCall, TimeSpan delay)
-        => BackgroundJob.Schedule(functionCall, delay);
+    {
+        return BackgroundJob.Schedule(functionCall, delay);
+    }
 
     public string Schedule<T>(Expression<Action<T>> functionCall, TimeSpan delay)
-        => BackgroundJob.Schedule<T>(functionCall, delay);
+    {
+        return BackgroundJob.Schedule(functionCall, delay);
+    }
 
     public string Schedule(Expression<Action> functionCall, DateTimeOffset enqueueAt)
-        => BackgroundJob.Schedule(functionCall, enqueueAt);
+    {
+        return BackgroundJob.Schedule(functionCall, enqueueAt);
+    }
 
     public string ContinueQueueWith(string parentJobId, Expression<Action> functionCall)
-        => BackgroundJob.ContinueJobWith(parentJobId, functionCall);
+    {
+        return BackgroundJob.ContinueJobWith(parentJobId, functionCall);
+    }
 
-    public bool Delete(string jobId) => BackgroundJob.Delete(jobId);
+    public bool Delete(string jobId)
+    {
+        return BackgroundJob.Delete(jobId);
+    }
 
-    public bool Requeue(string jobId) => BackgroundJob.Requeue(jobId);
+    public bool Requeue(string jobId)
+    {
+        return BackgroundJob.Requeue(jobId);
+    }
 }

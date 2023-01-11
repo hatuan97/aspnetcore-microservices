@@ -11,7 +11,7 @@ namespace Saga.Orchestrator.Controllers;
 public class CheckoutController : ControllerBase
 {
     private readonly ISagaOrderManager<BasketCheckoutDto, OrderResponse> _sagaOrderManager;
-    
+
     public CheckoutController(ISagaOrderManager<BasketCheckoutDto, OrderResponse> sagaOrderManager)
     {
         _sagaOrderManager = sagaOrderManager;

@@ -5,15 +5,14 @@ namespace Basket.API.Services;
 
 public class EmailTemplateService
 {
+    private static readonly string _baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+    private static readonly string _tmplFolder = Path.Combine(_baseDirectory, "EmailTemplates");
     protected readonly BackgroundJobSettings BackgroundJobSettings;
-    
+
     public EmailTemplateService(BackgroundJobSettings settings)
     {
         BackgroundJobSettings = settings;
     }
-    
-    private static readonly string _baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-    private static readonly string _tmplFolder = Path.Combine(_baseDirectory, "EmailTemplates");
 
     protected string ReadEmailTemplateContent(string templateEmailName, string format = "html")
     {

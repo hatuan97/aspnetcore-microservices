@@ -1,6 +1,5 @@
 using Common.Logging;
 using Inventory.Product.API.Persistence;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Serilog;
 using Shared.Configurations;
@@ -14,13 +13,13 @@ public static class HostExtensions
         host.ConfigureAppConfiguration((context, config) =>
         {
             var env = context.HostingEnvironment;
-            config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, 
-                    reloadOnChange: true)
+            config.AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true,
+                    true)
                 .AddEnvironmentVariables();
         }).UseSerilog(Serilogger.Configure);
     }
-    
+
     public static IHost MigrateDatabase(this IHost host)
     {
         using var scope = host.Services.CreateScope();
@@ -28,7 +27,7 @@ public static class HostExtensions
         var settings = services.GetService<MongoDbSettings>();
         if (settings == null || string.IsNullOrEmpty(settings.ConnectionString))
             throw new ArgumentNullException("DatabaseSettings is not configured");
-        
+
         var mongoClient = services.GetRequiredService<IMongoClient>();
         new InventoryDbSeed()
             .SeedDataAsync(mongoClient, settings)

@@ -10,7 +10,7 @@ services:
   
   customerdb:
     image: postgres:alpine3.16
-    
+  
   basketdb:
     image: redis:alpine
 
@@ -35,14 +35,14 @@ services:
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.17.7
-    
+  
   #microservices api section
   product.api:
     image: ${DOCKER_REGISTRY-}product-api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: Services/Product.API/Dockerfile
-    
+  
   customer.api:
     image: ${DOCKER_REGISTRY-}customer-api:${PLATFORM:-linux}-${TAG:-latest}
     build:
@@ -66,7 +66,7 @@ services:
     build:
       context: .
       dockerfile: Services/Inventory/Inventory.Product.API/Dockerfile
-      
+  
   inventory.grpc:
     image: ${DOCKER_REGISTRY-}inventory-grpc:${PLATFORM:-linux}-${TAG:-latest}
     build:
@@ -91,7 +91,7 @@ services:
       context: .
       dockerfile: WebApps/WebHealthStatus/Dockerfile
 
-    
+
 #network section
 networks:
   default:

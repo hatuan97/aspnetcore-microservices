@@ -5,40 +5,29 @@ public abstract class ValueObject
 {
     protected static bool EqualOperator(ValueObject left, ValueObject right)
     {
-        if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null))
-        {
-            return false;
-        }
+        if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null)) return false;
         return ReferenceEquals(left, null) || left.Equals(right);
     }
 
     protected static bool NotEqualOperator(ValueObject left, ValueObject right)
     {
-        return !(EqualOperator(left, right));
+        return !EqualOperator(left, right);
     }
 
     protected abstract IEnumerable<object> GetValues();
 
     public override bool Equals(object obj)
     {
-        if (obj == null || obj.GetType() != GetType())
-        {
-            return false;
-        }
-        ValueObject other = (ValueObject)obj;
-        using IEnumerator<object> thisValues = GetValues().GetEnumerator();
-        using IEnumerator<object> otherValues = other.GetValues().GetEnumerator();
+        if (obj == null || obj.GetType() != GetType()) return false;
+        var other = (ValueObject)obj;
+        using var thisValues = GetValues().GetEnumerator();
+        using var otherValues = other.GetValues().GetEnumerator();
         while (thisValues.MoveNext() && otherValues.MoveNext())
         {
-            if (ReferenceEquals(thisValues.Current, null) ^ ReferenceEquals(otherValues.Current, null))
-            {
-                return false;
-            }
-            if (thisValues.Current != null && !thisValues.Current.Equals(otherValues.Current))
-            {
-                return false;
-            }
+            if (ReferenceEquals(thisValues.Current, null) ^ ReferenceEquals(otherValues.Current, null)) return false;
+            if (thisValues.Current != null && !thisValues.Current.Equals(otherValues.Current)) return false;
         }
+
         return !thisValues.MoveNext() && !otherValues.MoveNext();
     }
 
@@ -51,6 +40,6 @@ public abstract class ValueObject
 
     public ValueObject GetCopy()
     {
-        return this.MemberwiseClone() as ValueObject;
+        return MemberwiseClone() as ValueObject;
     }
 }

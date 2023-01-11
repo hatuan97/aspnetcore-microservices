@@ -1,5 +1,5 @@
-using MediatR;
 using FluentValidation;
+using MediatR;
 using ValidationException = Infrastructure.Exceptions.ValidationException;
 
 namespace Ordering.Application.Common.Behaviours;
@@ -13,11 +13,12 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
     {
         _validators = validators;
     }
-    
-    public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+
+    public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken,
+        RequestHandlerDelegate<TResponse> next)
     {
         if (!_validators.Any()) return await next();
-        
+
         var context = new ValidationContext<TRequest>(request);
 
         var validationResults = await Task.WhenAll(

@@ -12,19 +12,20 @@ public class PagedList<T> : List<T>
             TotalItems = totalItems,
             PageSize = pageSize,
             CurrentPage = pageIndex,
-            TotalPages = (int) Math.Ceiling(totalItems / (double) pageSize)
+            TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize)
         };
         AddRange(items);
     }
-    
+
     private MetaData _metaData { get; }
 
     public MetaData GetMetaData()
     {
         return _metaData;
     }
-    
-    public static async Task<PagedList<T>> ToPagedList(IMongoCollection<T> source, FilterDefinition<T> filter, int pageIndex, int pageSize)
+
+    public static async Task<PagedList<T>> ToPagedList(IMongoCollection<T> source, FilterDefinition<T> filter,
+        int pageIndex, int pageSize)
     {
         var count = await source.Find(filter).CountDocumentsAsync();
         var items = await source.Find(filter)

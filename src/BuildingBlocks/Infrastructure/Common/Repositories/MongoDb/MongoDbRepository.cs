@@ -1,6 +1,6 @@
-using MongoDB.Driver;
 using Contracts.Domains;
 using Contracts.Domains.Interfaces;
+using MongoDB.Driver;
 using Shared.Configurations;
 
 namespace Infrastructure.Common;
@@ -13,13 +13,13 @@ public class MongoDbRepository<T> : MongoDbRepositoryAsync<T>, IMongoDbRepositor
             .WithWriteConcern(WriteConcern.Acknowledged);
     }
 
+    protected virtual IMongoCollection<T> Collection =>
+        Database.GetCollection<T>(GetCollectionName());
+
     public IMongoCollection<T> FindAll(ReadPreference? readPreference = null)
     {
         return Database
             .WithReadPreference(readPreference ?? ReadPreference.Primary)
             .GetCollection<T>(GetCollectionName());
     }
-
-    protected virtual IMongoCollection<T> Collection =>
-        Database.GetCollection<T>(GetCollectionName());
 }
