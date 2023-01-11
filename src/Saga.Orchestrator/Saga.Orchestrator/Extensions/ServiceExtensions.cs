@@ -99,6 +99,10 @@ public static class ServiceExtensions
             {
                 cfg.Host(mqConnection);
                 cfg.ConfigureEndpoints(ctx);
+                cfg.UseMessageRetry(retryConfigurator =>
+                {
+                    retryConfigurator.Interval(3, TimeSpan.FromSeconds(5));
+                });
             });
         });
     }

@@ -94,6 +94,10 @@ public static class ServiceExtensions
             config.UsingRabbitMq((ctx, cfg) =>
             {
                 cfg.Host(mqConnection);
+                cfg.UseMessageRetry(retryConfigurator =>
+                {
+                    retryConfigurator.Interval(3, TimeSpan.FromSeconds(5));
+                });
             });
             // Publish submit order message, instead of sending it to a specific queue directly.
             config.AddRequestClient<IBasketCheckoutEvent>();
