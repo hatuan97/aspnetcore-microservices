@@ -72,14 +72,14 @@ services:
   #infrastructure section
   
   rabbitmq:
-    container_name: rabbitmq
+    container_name: tedurabbitmq
     restart: always
     ports:
       - "5672:5672"
       - "15672:15672"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
-    hostname: rabbitmq
+    hostname: tedurabbitmq
     
   pgadmin:
     container_name: pgadmin
@@ -168,7 +168,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - "CacheSettings:ConnectionString=basketdb:6379"
-      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+      - "EventBusSettings:HostAddress=amqp://guest:guest@tedurabbitmq:5672"
       - "GrpcSettings:StockUrl=http://inventory.grpc"
       - BackgroundJobSettings:HangfireUrl=http://hangfire.api
       - BackgroundJobSettings:CheckoutUrl=http://localhost:6001
@@ -185,7 +185,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - "DatabaseSettings:ConnectionString=Server=orderdb;Database=OrderDb;User Id=sa;Password=Passw0rd!;Multipleactiveresultsets=true"
-      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+      - "EventBusSettings:HostAddress=amqp://guest:guest@tedurabbitmq:5672"
     depends_on:
       - orderdb
       - rabbitmq

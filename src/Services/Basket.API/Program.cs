@@ -1,6 +1,7 @@
 using Basket.API;
 using Basket.API.Extensions;
 using HealthChecks.UI.Client;
+using Infrastructure.Extensions;
 using Infrastructure.Middlewares;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
@@ -23,7 +24,7 @@ try
         => options.LowercaseUrls = true);
     
     // configure Mass Transit
-    builder.Services.ConfigureMassTransit();
+    builder.Services.ConfigureMassTransitWithRabbitMq();
 
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

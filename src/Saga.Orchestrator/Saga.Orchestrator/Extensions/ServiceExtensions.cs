@@ -2,9 +2,6 @@ using Common.Logging;
 using Contracts.Sagas.OrderManager;
 using Infrastructure.Extensions;
 using Infrastructure.Policies;
-using MassTransit;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Saga.Orchestrator.Application.IntegrationEvents.EventsHanler;
 using Saga.Orchestrator.HttpRepository;
 using Saga.Orchestrator.HttpRepository.Interfaces;
 using Saga.Orchestrator.OrderManager;
@@ -82,28 +79,5 @@ public static class ServiceExtensions
             .UseExponentialHttpRetryPolicy();
         services.AddScoped(sp => sp.GetService<IHttpClientFactory>()
             .CreateClient("InventoryAPI"));
-    }
-
-    public static void ConfigureMassTransit(this IServiceCollection services)
-    {
-        var settings = services.GetOptions<EventBusSettings>("EventBusSettings");
-        if (settings == null || string.IsNullOrEmpty(settings.HostAddress))
-            throw new ArgumentNullException("EventBusSetting is not configured");
-
-        var mqConnection = new Uri(settings.HostAddress);
-        services.TryAddSingleton(KebabCaseEndpointNameFormatter.Instance);
-        services.AddMassTransit(config =>
-        {
-            config.AddConsumersFromNamespaceContaining<SagaBasketCheckoutEventHandler>();
-            config.UsingRabbitMq((ctx, cfg) =>
-            {
-                cfg.Host(mqConnection);
-                cfg.ConfigureEndpoints(ctx);
-                cfg.UseMessageRetry(retryConfigurator =>
-                {
-                    retryConfigurator.Interval(3, TimeSpan.FromSeconds(5));
-                });
-            });
-        });
     }
 }

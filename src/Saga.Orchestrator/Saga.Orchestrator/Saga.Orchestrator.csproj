@@ -10,7 +10,6 @@
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
         <PackageReference Include="stateless" Version="5.11.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-        <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.5" />
     </ItemGroup>
 
     <ItemGroup>

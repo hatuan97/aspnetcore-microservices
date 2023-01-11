@@ -5,12 +5,9 @@ using Basket.API.Services;
 using Basket.API.Services.Interfaces;
 using Common.Logging;
 using Contracts.Common.Interfaces;
-using EventBus.Messages.IntegrationEvents.Events;
 using Infrastructure.Common;
 using Infrastructure.Extensions;
 using Infrastructure.Policies;
-using MassTransit;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Shared.Configurations;
 using Inventory.Grpc.Client;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -80,30 +77,6 @@ public static class ServiceExtensions
         });
     }
 
-    public static void ConfigureMassTransit(this IServiceCollection services)
-    {
-        var settings = services.GetOptions<EventBusSettings>(nameof(EventBusSettings));
-        if (settings == null || string.IsNullOrEmpty(settings.HostAddress) ||
-            string.IsNullOrEmpty(settings.HostAddress)) throw new ArgumentNullException("EventBusSettings is not configured!");
-
-        var mqConnection = new Uri(settings.HostAddress);
-        
-        services.TryAddSingleton(KebabCaseEndpointNameFormatter.Instance);
-        services.AddMassTransit(config =>
-        {
-            config.UsingRabbitMq((ctx, cfg) =>
-            {
-                cfg.Host(mqConnection);
-                cfg.UseMessageRetry(retryConfigurator =>
-                {
-                    retryConfigurator.Interval(3, TimeSpan.FromSeconds(5));
-                });
-            });
-            // Publish submit order message, instead of sending it to a specific queue directly.
-            config.AddRequestClient<IBasketCheckoutEvent>();
-        });
-    }
-    
     public static void ConfigureHealthChecks(this IServiceCollection services)
     {
         var cacheSettings = services.GetOptions<CacheSettings>(nameof(CacheSettings));
