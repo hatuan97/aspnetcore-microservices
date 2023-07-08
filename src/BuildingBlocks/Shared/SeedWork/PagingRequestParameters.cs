@@ -2,10 +2,6 @@ namespace Shared.SeedWork;
 
 public class PagingRequestParameters
 {
-    public PagingRequestParameters()
-    {
-        
-    }
     private const int maxPageSize = 50;
 
     private int _pageIndex = 1;

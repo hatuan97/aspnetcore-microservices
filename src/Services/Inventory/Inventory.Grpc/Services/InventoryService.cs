@@ -1,13 +1,14 @@
 using Grpc.Core;
+using Inventory.Grpc.Protos;
 using Inventory.Grpc.Repositories.Interfaces;
 using ILogger = Serilog.ILogger;
 
 namespace Inventory.Grpc.Services;
-using Protos;
+
 public class InventoryService : StockProtoService.StockProtoServiceBase
 {
-    private readonly IInventoryRepository _repository;
     private readonly ILogger _logger;
+    private readonly IInventoryRepository _repository;
 
     public InventoryService(IInventoryRepository repository, ILogger logger)
     {
@@ -19,7 +20,7 @@ public class InventoryService : StockProtoService.StockProtoServiceBase
     {
         _logger.Information($"BEGIN Get Stock of ItemNo: {request.ItemNo}");
         var stockQuantity = await _repository.GetStockQuantity(request.ItemNo);
-        var result = new StockModel()
+        var result = new StockModel
         {
             Quantity = stockQuantity
         };

@@ -23,7 +23,7 @@ public static class ApplicationExtensions
 
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+            endpoints.MapHealthChecks("/hc", new HealthCheckOptions
             {
                 Predicate = _ => true,
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse

@@ -6,7 +6,7 @@ namespace Contracts.Common.Events;
 public class EventEntity<T> : EntityBase<T>, IEventEntity<T>
 {
     private readonly List<BaseEvent> _domainEvents = new();
-    
+
     public void AddDomainEvent(BaseEvent domainEvent)
     {
         _domainEvents.Add(domainEvent);
@@ -22,5 +22,8 @@ public class EventEntity<T> : EntityBase<T>, IEventEntity<T>
         _domainEvents.Clear();
     }
 
-    public IReadOnlyCollection<BaseEvent> DomainEvents() => _domainEvents.AsReadOnly();
+    public IReadOnlyCollection<BaseEvent> DomainEvents()
+    {
+        return _domainEvents.AsReadOnly();
+    }
 }

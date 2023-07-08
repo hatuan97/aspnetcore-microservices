@@ -14,14 +14,21 @@ public class OrderRepository : RepositoryBase<Order, long, OrderContext>, IOrder
     }
 
 
-    public async Task<IEnumerable<Order>> GetOrdersByUserNameAsync(string userName) => 
-        await FindByCondition(x => x.UserName.Equals(userName))
+    public async Task<IEnumerable<Order>> GetOrdersByUserNameAsync(string userName)
+    {
+        return await FindByCondition(x => x.UserName.Equals(userName))
             .ToListAsync();
+    }
 
     public Task<Order> GetOrderByDocumentNo(string documentNo)
-        => FindByCondition(x => x.DocumentNo.ToString().Equals(documentNo)).FirstOrDefaultAsync();
+    {
+        return FindByCondition(x => x.DocumentNo.ToString().Equals(documentNo)).FirstOrDefaultAsync();
+    }
 
-    public void CreateOrder(Order order) => Create(order);
+    public void CreateOrder(Order order)
+    {
+        Create(order);
+    }
 
     public async Task<Order> UpdateOrderAsync(Order order)
     {
@@ -29,5 +36,8 @@ public class OrderRepository : RepositoryBase<Order, long, OrderContext>, IOrder
         return order;
     }
 
-    public void DeleteOrder(Order order) => Delete(order);
+    public void DeleteOrder(Order order)
+    {
+        Delete(order);
+    }
 }

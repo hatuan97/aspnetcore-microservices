@@ -13,7 +13,7 @@ public static class ServiceExtensions
         var emailSettings = configuration.GetSection(nameof(SMTPEmailSetting))
             .Get<SMTPEmailSetting>();
         services.AddSingleton(emailSettings);
-        
+
         var databaseSettings = configuration.GetSection(nameof(DatabaseSettings))
             .Get<DatabaseSettings>();
         services.AddSingleton(databaseSettings);

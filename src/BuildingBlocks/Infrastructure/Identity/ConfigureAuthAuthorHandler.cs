@@ -27,7 +27,7 @@ public static class ConfigureAuthAuthorHandler
                 opt.SupportedTokens = SupportedTokens.Both;
             });
     }
-    
+
     public static void ConfigureAuthorization(this IServiceCollection services)
     {
         services.AddAuthorization(
@@ -40,5 +40,4 @@ public static class ConfigureAuthAuthorHandler
                 });
             });
     }
-
 }

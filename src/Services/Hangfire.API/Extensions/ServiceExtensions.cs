@@ -13,13 +13,13 @@ namespace Hangfire.API.Extensions;
 
 public static class ServiceExtensions
 {
-    internal static IServiceCollection AddConfigurationSettings(this IServiceCollection services, 
+    internal static IServiceCollection AddConfigurationSettings(this IServiceCollection services,
         IConfiguration configuration)
     {
         var hangFireSettings = configuration.GetSection(nameof(HangFireSettings))
             .Get<HangFireSettings>();
         services.AddSingleton(hangFireSettings);
-        
+
         var emailSettings = configuration.GetSection(nameof(SMTPEmailSetting))
             .Get<SMTPEmailSetting>();
         services.AddSingleton(emailSettings);
@@ -28,16 +28,17 @@ public static class ServiceExtensions
     }
 
     public static IServiceCollection ConfigureServices(this IServiceCollection services)
-        => services.AddTransient<IScheduledJobService, HangfireService>()
+    {
+        return services.AddTransient<IScheduledJobService, HangfireService>()
             .AddScoped<ISmtpEmailService, SmtpEmailService>()
-            .AddScoped<IBackgroundJobService, BackgroundJobService>()
-        ;
-    
+            .AddScoped<IBackgroundJobService, BackgroundJobService>();
+    }
+
     public static void ConfigureHealthChecks(this IServiceCollection services)
     {
         var databaseSettings = services.GetOptions<HangFireSettings>(nameof(HangFireSettings));
         services.AddHealthChecks()
-            .AddMongoDb(databaseSettings.Storage.ConnectionString, 
+            .AddMongoDb(databaseSettings.Storage.ConnectionString,
                 "MongoDb Health",
                 HealthStatus.Degraded);
     }

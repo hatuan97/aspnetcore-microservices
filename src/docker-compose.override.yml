@@ -14,7 +14,7 @@ services:
       - sqlserver_data:/var/opt/mssql
     ports:
       - "1435:1433"
-        
+  
   #productdb: mysql
   productdb:
     container_name: productdb
@@ -41,7 +41,7 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    
+  
   #basketdb: redis
   basketdb:
     container_name: basketdb
@@ -57,7 +57,7 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
-        
+  
   hangfiredb:
     container_name: hangfiredb
     ports:
@@ -67,20 +67,20 @@ services:
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: 'admin'
-      MONGO_INITDB_ROOT_PASSWORD: 'admin' 
+      MONGO_INITDB_ROOT_PASSWORD: 'admin'
   
   #infrastructure section
   
   rabbitmq:
-    container_name: rabbitmq
+    container_name: tedurabbitmq
     restart: always
     ports:
       - "5672:5672"
       - "15672:15672"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
-    hostname: rabbitmq
-    
+    hostname: tedurabbitmq
+  
   pgadmin:
     container_name: pgadmin
     environment:
@@ -91,7 +91,7 @@ services:
       - "5050:80"
     volumes:
       - pgadmin_data:/root/.pgadmin
-    
+  
   portainer:
     container_name: portainer
     restart: always
@@ -110,7 +110,7 @@ services:
       - xpack.security.enabled=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - discovery.type=single-node
-#      - ELASTIC_USERNAME=elastic #default username
+      #      - ELASTIC_USERNAME=elastic #default username
       - ELASTIC_PASSWORD=admin
     ports:
       - "9200:9200"
@@ -132,7 +132,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-      
+  
   #microservices api sections
   product.api:
     container_name: product.api
@@ -143,12 +143,12 @@ services:
       - "ApiConfiguration:ApiBaseUrl=http://product.api"
       - "ApiConfiguration:IdentityServerBaseUrl=http://localhost:6001"
       - "ApiConfiguration:IssuerUri=http://tedu.identity.api"
-    depends_on: 
+    depends_on:
       - productdb
     ports:
       - "6002:80"
     restart: always
-    
+  
   customer.api:
     container_name: customer.api
     environment:
@@ -156,7 +156,7 @@ services:
       - ASPNETCORE_URLS=http://+:80
       - "DatabaseSettings:ConnectionString=Server=customerdb;Port=5432;Database=CustomerDb;User Id=admin;Password=admin1234"
       - "HangFireSettings:Storage:ConnectionString=Server=customerdb;Port=5432;Database=CustomerDb;User Id=admin;Password=admin1234"
-    depends_on: 
+    depends_on:
       - customerdb
     ports:
       - "6003:80"
@@ -168,11 +168,11 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - "CacheSettings:ConnectionString=basketdb:6379"
-      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+      - "EventBusSettings:HostAddress=amqp://guest:guest@tedurabbitmq:5672"
       - "GrpcSettings:StockUrl=http://inventory.grpc"
       - BackgroundJobSettings:HangfireUrl=http://hangfire.api
       - BackgroundJobSettings:CheckoutUrl=http://localhost:6001
-    depends_on: 
+    depends_on:
       - basketdb
       - rabbitmq
     ports:
@@ -185,14 +185,14 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - "DatabaseSettings:ConnectionString=Server=orderdb;Database=OrderDb;User Id=sa;Password=Passw0rd!;Multipleactiveresultsets=true"
-      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+      - "EventBusSettings:HostAddress=amqp://guest:guest@tedurabbitmq:5672"
     depends_on:
       - orderdb
       - rabbitmq
     ports:
       - "6005:80"
     restart: always
-    
+  
   inventory.product.api:
     container_name: inventory.product.api
     environment:
@@ -218,7 +218,7 @@ services:
     ports:
       - "6007:80"
     restart: always
-    
+  
   apigw.ocelot:
     container_name: apigw.ocelot
     environment:

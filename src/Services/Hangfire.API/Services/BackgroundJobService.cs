@@ -8,19 +8,18 @@ namespace Hangfire.API.Services;
 
 public class BackgroundJobService : IBackgroundJobService
 {
-    private readonly IScheduledJobService _jobService;
     private readonly ISmtpEmailService _emailService;
     private readonly ILogger _logger;
-    
+
     public BackgroundJobService(IScheduledJobService jobService, ISmtpEmailService emailService, ILogger logger)
     {
-        _jobService = jobService;
+        ScheduledJobService = jobService;
         _emailService = emailService;
         _logger = logger;
     }
 
-    public IScheduledJobService ScheduledJobService => _jobService;
-    
+    public IScheduledJobService ScheduledJobService { get; }
+
     public string SendEmailContent(string email, string subject, string emailContent, DateTimeOffset enqueueAt)
     {
         var emailRequest = new MailRequest
@@ -32,7 +31,7 @@ public class BackgroundJobService : IBackgroundJobService
 
         try
         {
-            var jobId = _jobService.Schedule(() => _emailService.SendEmail(emailRequest), enqueueAt);
+            var jobId = ScheduledJobService.Schedule(() => _emailService.SendEmail(emailRequest), enqueueAt);
             _logger.Information($"Sent email to {email} with subject: {subject} - Job Id: {jobId}");
 
             return jobId;

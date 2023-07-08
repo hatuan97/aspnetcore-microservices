@@ -19,11 +19,11 @@ public static class ConfigureServices
         var databaseSettings = services.GetOptions<DatabaseSettings>(nameof(DatabaseSettings));
         if (databaseSettings == null || string.IsNullOrEmpty(databaseSettings.ConnectionString))
             throw new ArgumentNullException("Connection string is not configured.");
-        
+
         services.AddDbContext<OrderContext>(options =>
         {
             options.UseSqlServer(databaseSettings.ConnectionString,
-                builder => 
+                builder =>
                     builder.MigrationsAssembly(typeof(OrderContext).Assembly.FullName));
         });
 

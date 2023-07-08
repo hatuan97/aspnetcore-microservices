@@ -13,7 +13,9 @@ public class InventoryRepository : MongoDbRepository<InventoryEntry>, IInventory
     }
 
     public async Task<int> GetStockQuantity(string itemNo)
-        => Collection.AsQueryable()
+    {
+        return Collection.AsQueryable()
             .Where(x => x.ItemNo.Equals(itemNo))
             .Sum(x => x.Quantity);
+    }
 }

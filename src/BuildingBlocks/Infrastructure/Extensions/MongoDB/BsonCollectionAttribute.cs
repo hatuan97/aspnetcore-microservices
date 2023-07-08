@@ -7,5 +7,6 @@ public class BsonCollectionAttribute : Attribute
     {
         CollectionName = collectionName;
     }
+
     public string CollectionName { get; }
 }

@@ -9,5 +9,7 @@ public static class MongoCollectionExtensions
         this IMongoCollection<TDestination> collection,
         FilterDefinition<TDestination> filter,
         int pageIndex, int pageNumber) where TDestination : class
-        => PagedList<TDestination>.ToPagedList(collection, filter, pageIndex, pageNumber);
+    {
+        return PagedList<TDestination>.ToPagedList(collection, filter, pageIndex, pageNumber);
+    }
 }

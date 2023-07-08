@@ -1,8 +1,8 @@
 using Hangfire.API.Extensions;
 using HealthChecks.UI.Client;
-using Serilog;
 using Infrastructure.ScheduledJobs;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +40,7 @@ try
 
     app.UseEndpoints(endpoints =>
     {
-        endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+        endpoints.MapHealthChecks("/hc", new HealthCheckOptions
         {
             Predicate = _ => true,
             ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
@@ -52,7 +52,7 @@ try
 }
 catch (Exception ex)
 {
-    string type = ex.GetType().Name;
+    var type = ex.GetType().Name;
     if (type.Equals("StopTheHostException", StringComparison.Ordinal)) throw;
 
     Log.Fatal(ex, $"Unhandled exception: {ex.Message}");

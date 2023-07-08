@@ -2,6 +2,7 @@ namespace Shared.DTOs.Order;
 
 public class CreateOrderDto
 {
+    private string _invoiceAddress;
     public string UserName { get; set; }
     public decimal TotalPrice { get; set; }
 
@@ -11,7 +12,6 @@ public class CreateOrderDto
 
     public string ShippingAddress { get; set; }
 
-    private string _invoiceAddress;
     public string? InvoiceAddress
     {
         get => _invoiceAddress;
