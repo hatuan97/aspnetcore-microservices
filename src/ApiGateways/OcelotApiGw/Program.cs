@@ -28,20 +28,17 @@ try
     var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
-    {
-        // app.UseSwagger();
-        // app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json",
-        //     $"{builder.Environment.ApplicationName} v1"));
+    if (app.Environment.IsProduction())
+    { 
+        app.UseHttpsRedirection();
     }
 
     app.UseCors("CorsPolicy");
 
     app.UseMiddleware<ErrorWrappingMiddleware>();
-    // app.UseAuthentication();
+    app.UseAuthentication();
     app.UseRouting();
-    // app.UseHttpsRedirection();
-    // app.UseAuthorization();
+    app.UseAuthorization();
     app.UseEndpoints(endpoints =>
     {
         endpoints.MapGet("/", context =>

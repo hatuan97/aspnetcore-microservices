@@ -8,15 +8,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="6.0.2"/>
-        <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3"/>
+        <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="6.0.2" />
+        <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\BuildingBlocks\Common.Logging\Common.Logging.csproj"/>
-        <ProjectReference Include="..\..\BuildingBlocks\Infrastructure\Infrastructure.csproj"/>
-        <ProjectReference Include="..\..\BuildingBlocks\Shared\Shared.csproj"/>
+        <ProjectReference Include="..\..\BuildingBlocks\Common.Logging\Common.Logging.csproj" />
+        <ProjectReference Include="..\..\BuildingBlocks\Infrastructure\Infrastructure.csproj" />
+        <ProjectReference Include="..\..\BuildingBlocks\Shared\Shared.csproj" />
     </ItemGroup>
 
 </Project>

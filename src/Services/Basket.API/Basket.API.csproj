@@ -8,29 +8,29 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="6.0.4"/>
-        <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5"/>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0"/>
-        <PackageReference Include="Google.Protobuf" Version="3.21.4"/>
-        <PackageReference Include="Grpc.AspNetCore" Version="2.47.0"/>
-        <PackageReference Include="Grpc.Net.Client" Version="2.47.0"/>
-        <PackageReference Include="Grpc.Tools" Version="2.47.0">
+        <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="6.0.4" />
+        <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageReference Include="Google.Protobuf" Version="3.23.4" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.55.0" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.55.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.56.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.6"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3"/>
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="7.0.8" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\BuildingBlocks\Common.Logging\Common.Logging.csproj"/>
-        <ProjectReference Include="..\..\BuildingBlocks\Contracts\Contracts.csproj"/>
-        <ProjectReference Include="..\..\BuildingBlocks\EventBus\EventBus.Messages\EventBus.Messages.csproj"/>
-        <ProjectReference Include="..\..\BuildingBlocks\Infrastructure\Infrastructure.csproj"/>
+        <ProjectReference Include="..\..\BuildingBlocks\Common.Logging\Common.Logging.csproj" />
+        <ProjectReference Include="..\..\BuildingBlocks\Contracts\Contracts.csproj" />
+        <ProjectReference Include="..\..\BuildingBlocks\EventBus\EventBus.Messages\EventBus.Messages.csproj" />
+        <ProjectReference Include="..\..\BuildingBlocks\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="Protos\stockItem.proto"/>
+        <None Remove="Protos\stockItem.proto" />
         <Protobuf Include="Protos\stockItem.proto" GrpcServices="Client">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Protobuf>
