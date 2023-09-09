@@ -3,7 +3,7 @@ version: '3.8'
 services:
   #database section
   orderdb:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/mssql/server:2022-latest
   
   productdb:
     image: mysql:8.0.29
