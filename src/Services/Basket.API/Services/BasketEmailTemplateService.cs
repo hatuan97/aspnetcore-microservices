@@ -8,7 +8,7 @@ public class BasketEmailTemplateService : EmailTemplateService, IEmailTemplateSe
     public BasketEmailTemplateService(BackgroundJobSettings settings) : base(settings)
     {
     }
-    
+
     public string GenerateReminderCheckoutOrderEmail(string username)
     {
         var _checkoutUrl = $"{BackgroundJobSettings.CheckoutUrl}/{BackgroundJobSettings.BasketUrl}/{username}";
@@ -18,6 +18,4 @@ public class BasketEmailTemplateService : EmailTemplateService, IEmailTemplateSe
 
         return emailReplacedText;
     }
-
-   
 }

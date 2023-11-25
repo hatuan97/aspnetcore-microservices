@@ -5,7 +5,6 @@ using Contracts.Domains.Interfaces;
 using Infrastructure.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Ordering.Domain.Entities;
 using Serilog;
 
@@ -13,16 +12,17 @@ namespace Ordering.Infrastructure.Persistence;
 
 public class OrderContext : DbContext
 {
-    private readonly IMediator _mediator;
     private readonly ILogger _logger;
+    private readonly IMediator _mediator;
+    private List<BaseEvent> _baseEvents;
+
     public OrderContext(DbContextOptions<OrderContext> options, IMediator mediator, ILogger logger) : base(options)
     {
         _mediator = mediator;
         _logger = logger;
     }
-    
+
     public DbSet<Order> Orders { get; set; }
-    private List<BaseEvent> _baseEvents;
 
     private void SetBaseEventsBeforeSaveChanges()
     {
@@ -34,18 +34,18 @@ public class OrderContext : DbContext
         _baseEvents = domainEntities
             .SelectMany(x => x.DomainEvents())
             .ToList();
-        
+
         domainEntities.ForEach(x => x.ClearDomainEvents());
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        
+
         base.OnModelCreating(modelBuilder);
     }
-    
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
         SetBaseEventsBeforeSaveChanges();
         var modified = ChangeTracker.Entries()
@@ -54,7 +54,6 @@ public class OrderContext : DbContext
                         e.State == EntityState.Deleted);
 
         foreach (var item in modified)
-        {
             switch (item.State)
             {
                 case EntityState.Added:
@@ -63,8 +62,9 @@ public class OrderContext : DbContext
                         addedEntity.CreatedDate = DateTime.UtcNow;
                         item.State = EntityState.Added;
                     }
+
                     break;
-            
+
                 case EntityState.Modified:
                     Entry(item.Entity).Property("Id").IsModified = false;
                     if (item.Entity is IDateTracking modifiedEntity)
@@ -72,10 +72,10 @@ public class OrderContext : DbContext
                         modifiedEntity.LastModifiedDate = DateTime.UtcNow;
                         item.State = EntityState.Modified;
                     }
-                    break; 
+
+                    break;
             }
-        }
-        
+
         // Dispatch Domain Events collection. 
         // Choices:
         // A) Right BEFORE committing data (EF SaveChanges) into the DB will make a single transaction including  

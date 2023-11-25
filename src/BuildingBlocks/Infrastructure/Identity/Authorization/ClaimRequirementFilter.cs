@@ -16,7 +16,7 @@ public class ClaimRequirementFilter : IAuthorizationFilter
         _functionCode = functionCode;
         _commandCode = commandCode;
     }
-    
+
     public void OnAuthorization(AuthorizationFilterContext context)
     {
         var permissionsClaim = context.HttpContext.User.Claims
@@ -24,7 +24,7 @@ public class ClaimRequirementFilter : IAuthorizationFilter
         if (permissionsClaim != null)
         {
             var permissions = JsonSerializer.Deserialize<List<string>>(permissionsClaim.Value);
-            if (!permissions.Contains(PermissionHelper.GetPermission(_functionCode, _commandCode))) 
+            if (!permissions.Contains(PermissionHelper.GetPermission(_functionCode, _commandCode)))
                 context.Result = new ForbidResult();
         }
         else

@@ -1,6 +1,5 @@
 using System.Text;
 using Contracts.Domains.Interfaces;
-using Microsoft.AspNetCore.Identity;
 using Infrastructure.Common;
 using Infrastructure.Extensions;
 using Infrastructure.Identity;
@@ -20,24 +19,24 @@ namespace Product.API.Extensions;
 
 public static class ServiceExtensions
 {
-    internal static IServiceCollection AddConfigurationSettings(this IServiceCollection services, 
+    internal static IServiceCollection AddConfigurationSettings(this IServiceCollection services,
         IConfiguration configuration)
     {
         var jwtSettings = configuration.GetSection(nameof(JwtSettings))
             .Get<JwtSettings>();
         services.AddSingleton(jwtSettings);
-        
+
         var databaseSettings = configuration.GetSection(nameof(DatabaseSettings))
             .Get<DatabaseSettings>();
         services.AddSingleton(databaseSettings);
-        
+
         var apiConfiguration = configuration.GetSection(nameof(ApiConfiguration))
             .Get<ApiConfiguration>();
         services.AddSingleton(apiConfiguration);
 
         return services;
     }
-    
+
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddControllers();
@@ -54,7 +53,7 @@ public static class ServiceExtensions
         services.ConfigureHealthChecks();
         return services;
     }
-    
+
     internal static IServiceCollection AddJwtAuthentication(this IServiceCollection services)
     {
         var settings = services.GetOptions<JwtSettings>(nameof(JwtSettings));
@@ -87,19 +86,20 @@ public static class ServiceExtensions
         return services;
     }
 
-    private static IServiceCollection ConfigureProductDbContext(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection ConfigureProductDbContext(this IServiceCollection services,
+        IConfiguration configuration)
     {
         var databaseSettings = configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
         if (databaseSettings == null || string.IsNullOrEmpty(databaseSettings.ConnectionString))
             throw new ArgumentNullException("Connection string is not configured.");
-        
+
         var builder = new MySqlConnectionStringBuilder(databaseSettings.ConnectionString);
-        services.AddDbContext<ProductContext>(m => m.UseMySql(builder.ConnectionString, 
+        services.AddDbContext<ProductContext>(m => m.UseMySql(builder.ConnectionString,
             ServerVersion.AutoDetect(builder.ConnectionString), e =>
-        {
-            e.MigrationsAssembly("Product.API");
-            e.SchemaBehavior(MySqlSchemaBehavior.Ignore);
-        }));
+            {
+                e.MigrationsAssembly("Product.API");
+                e.SchemaBehavior(MySqlSchemaBehavior.Ignore);
+            }));
 
         return services;
     }
@@ -126,50 +126,49 @@ public static class ServiceExtensions
             string.IsNullOrEmpty(configuration.ApiName)) throw new Exception("ApiConfiguration is not configured!");
 
         services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1",
-                    new OpenApiInfo
-                    {
-                        Title = "Product API V1",
-                        Version = configuration.ApiVersion,
-                    });
+        {
+            c.SwaggerDoc("v1",
+                new OpenApiInfo
+                {
+                    Title = "Product API V1",
+                    Version = configuration.ApiVersion
+                });
 
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Type = SecuritySchemeType.OAuth2,
+                Flows = new OpenApiOAuthFlows
                 {
-                    Type = SecuritySchemeType.OAuth2,
-                    Flows = new OpenApiOAuthFlows
+                    Implicit = new OpenApiOAuthFlow
                     {
-                        Implicit = new OpenApiOAuthFlow
+                        AuthorizationUrl = new Uri($"{configuration.IdentityServerBaseUrl}/connect/authorize"),
+                        Scopes = new Dictionary<string, string>
                         {
-                            AuthorizationUrl = new Uri($"{configuration.IdentityServerBaseUrl}/connect/authorize"),
-                            Scopes = new Dictionary<string, string>
-                            {
-                                { "tedu_microservices_api.read", "Tedu Microservices API Read Scope" },
-                                { "tedu_microservices_api.write", "Tedu Microservices API Write Scope" }
-                            }
+                            { "tedu_microservices_api.read", "Tedu Microservices API Read Scope" },
+                            { "tedu_microservices_api.write", "Tedu Microservices API Write Scope" }
                         }
                     }
-                });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            },
-                            Name = "Bearer"
-                        },
-                        new List<string>
-                        {
-                            "tedu_microservices_api.read", 
-                            "tedu_microservices_api.write"
-                        }
-                    }
-                });
+                }
             });
-        
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        },
+                        Name = "Bearer"
+                    },
+                    new List<string>
+                    {
+                        "tedu_microservices_api.read",
+                        "tedu_microservices_api.write"
+                    }
+                }
+            });
+        });
     }
 }

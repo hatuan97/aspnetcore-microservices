@@ -5,5 +5,5 @@ public enum CommandCode
     CREATE,
     UPDATE,
     DELETE,
-    VIEW,
+    VIEW
 }

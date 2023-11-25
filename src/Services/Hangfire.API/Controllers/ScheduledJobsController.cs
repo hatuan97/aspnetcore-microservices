@@ -10,6 +10,7 @@ namespace Hangfire.API.Controllers;
 public class ScheduledJobsController : ControllerBase
 {
     private readonly IBackgroundJobService _jobService;
+
     public ScheduledJobsController(IBackgroundJobService jobService)
     {
         _jobService = jobService;
@@ -24,7 +25,7 @@ public class ScheduledJobsController : ControllerBase
             model.enqueueAt);
         return Ok(jobId);
     }
-    
+
     [HttpDelete]
     [Route("delete/jobId/{id}")]
     public IActionResult DeleteJobId([Required] string id)

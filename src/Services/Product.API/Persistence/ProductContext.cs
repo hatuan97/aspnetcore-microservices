@@ -9,7 +9,7 @@ public class ProductContext : DbContext
     public ProductContext(DbContextOptions<ProductContext> options) : base(options)
     {
     }
-    
+
     public DbSet<CatalogProduct> Products { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -19,7 +19,7 @@ public class ProductContext : DbContext
             .IsUnique();
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
         var modified = ChangeTracker.Entries()
             .Where(e => e.State == EntityState.Modified ||
@@ -27,7 +27,6 @@ public class ProductContext : DbContext
                         e.State == EntityState.Deleted);
 
         foreach (var item in modified)
-        {
             switch (item.State)
             {
                 case EntityState.Added:
@@ -36,8 +35,9 @@ public class ProductContext : DbContext
                         addedEntity.CreatedDate = DateTime.UtcNow;
                         item.State = EntityState.Added;
                     }
+
                     break;
-            
+
                 case EntityState.Modified:
                     Entry(item.Entity).Property("Id").IsModified = false;
                     if (item.Entity is IDateTracking modifiedEntity)
@@ -45,9 +45,9 @@ public class ProductContext : DbContext
                         modifiedEntity.LastModifiedDate = DateTime.UtcNow;
                         item.State = EntityState.Modified;
                     }
-                    break; 
+
+                    break;
             }
-        }
 
         return base.SaveChangesAsync(cancellationToken);
     }

@@ -6,6 +6,7 @@ namespace Ordering.Application.Features.V1.Orders;
 
 public class CreateOrUpdateCommand : IMapFrom<Order>
 {
+    private string _invoiceAddress;
     public decimal TotalPrice { get; set; }
 
     public string FirstName { get; set; }
@@ -14,13 +15,12 @@ public class CreateOrUpdateCommand : IMapFrom<Order>
 
     public string ShippingAddress { get; set; }
 
-    private string _invoiceAddress;
     public string? InvoiceAddress
     {
         get => _invoiceAddress;
         set => _invoiceAddress = value ?? ShippingAddress;
     }
-    
+
     public void Mapping(Profile profile)
     {
         profile.CreateMap<CreateOrUpdateCommand, Order>();

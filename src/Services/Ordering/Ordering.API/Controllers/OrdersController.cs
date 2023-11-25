@@ -14,8 +14,8 @@ namespace Ordering.API.Controllers;
 [ApiController]
 public class OrdersController : ControllerBase
 {
-    private readonly IMediator _mediator;
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
 
     public OrdersController(IMediator mediator, IMapper mapper)
     {
@@ -43,7 +43,7 @@ public class OrdersController : ControllerBase
         var result = await _mediator.Send(query);
         return Ok(result);
     }
-    
+
     [HttpGet("{id:long}", Name = RouteNames.GetOrder)]
     [ProducesResponseType(typeof(OrderDto), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<OrderDto>> GetOrder([Required] long id)
@@ -52,42 +52,42 @@ public class OrdersController : ControllerBase
         var result = await _mediator.Send(query);
         return Ok(result);
     }
-    
+
     [HttpPost(Name = RouteNames.CreateOrder)]
     [ProducesResponseType(typeof(ApiResult<long>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<ApiResult<long>>> CreateOrder([FromBody]CreateOrderDto model)
+    public async Task<ActionResult<ApiResult<long>>> CreateOrder([FromBody] CreateOrderDto model)
     {
         var command = _mapper.Map<CreateOrderCommand>(model);
         var result = await _mediator.Send(command);
         return Ok(result);
     }
-    
-    [HttpPut("{id:long}",Name = RouteNames.UpdateOrder)]
+
+    [HttpPut("{id:long}", Name = RouteNames.UpdateOrder)]
     [ProducesResponseType(typeof(ApiResult<OrderDto>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<OrderDto>> UpdateOrder([Required]long id, [FromBody]UpdateOrderCommand command)
+    public async Task<ActionResult<OrderDto>> UpdateOrder([Required] long id, [FromBody] UpdateOrderCommand command)
     {
         command.SetId(id);
         var result = await _mediator.Send(command);
         return Ok(result);
     }
-    
-    [HttpDelete("{id:long}",Name = RouteNames.DeleteOrder)]
+
+    [HttpDelete("{id:long}", Name = RouteNames.DeleteOrder)]
     [ProducesResponseType(typeof(NoContentResult), (int)HttpStatusCode.NoContent)]
-    public async Task<ActionResult> DeleteOrder([Required]long id)
+    public async Task<ActionResult> DeleteOrder([Required] long id)
     {
         var command = new DeleteOrderCommand(id);
         await _mediator.Send(command);
         return NoContent();
     }
-    
-    [HttpDelete("document-no/{documentNo}",Name = RouteNames.DeleteOrderByDocumentNo)]
+
+    [HttpDelete("document-no/{documentNo}", Name = RouteNames.DeleteOrderByDocumentNo)]
     [ProducesResponseType(typeof(ApiResult<bool>), (int)HttpStatusCode.NoContent)]
-    public async Task<ApiResult<bool>> DeleteOrderByDocumentNo([Required]string documentNo)
+    public async Task<ApiResult<bool>> DeleteOrderByDocumentNo([Required] string documentNo)
     {
         var command = new DeleteOrderByDocumentNoCommand(documentNo);
         var result = await _mediator.Send(command);
         return result;
     }
-    
+
     #endregion
 }

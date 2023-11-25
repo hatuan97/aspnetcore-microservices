@@ -12,6 +12,6 @@ public class MappingProfile : Profile
         CreateMap<CatalogProduct, ProductDto>();
         CreateMap<CreateProductDto, CatalogProduct>();
         CreateMap<UpdateProductDto, CatalogProduct>()
-        .IgnoreAllNonExisting();
+            .IgnoreAllNonExisting();
     }
 }

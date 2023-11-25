@@ -8,5 +8,5 @@ public enum EOrderAction
     GetOrder,
     DeleteOrder,
     UpdateInventory,
-    DeleteInventory,
+    DeleteInventory
 }

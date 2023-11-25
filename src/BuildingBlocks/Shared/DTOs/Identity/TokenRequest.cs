@@ -1,3 +1,3 @@
 namespace Shared.DTOs.Identity;
 
-public record TokenRequest();
+public record TokenRequest;

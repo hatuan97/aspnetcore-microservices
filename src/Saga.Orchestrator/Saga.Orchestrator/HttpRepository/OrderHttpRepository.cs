@@ -13,12 +13,12 @@ public class OrderHttpRepository : IOrderHttpRepository
     {
         _client = client;
     }
-    
+
     public async Task<long> CreateOrder(CreateOrderDto order)
     {
         var response = await _client.PostAsJsonAsync("orders", order);
         if (!response.EnsureSuccessStatusCode().IsSuccessStatusCode) return -1;
- 
+
         var orderId = await response.ReadContentAs<ApiSuccessResult<long>>();
         return orderId.Data;
     }

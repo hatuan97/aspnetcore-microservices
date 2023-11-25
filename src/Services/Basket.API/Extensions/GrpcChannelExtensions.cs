@@ -15,7 +15,7 @@ public static class GrpcChannelExtensions
             };
         });
     }
-    
+
     private static MethodConfig getDefaultMethodConfig()
     {
         var defaultMethodConfig = new MethodConfig
@@ -30,7 +30,7 @@ public static class GrpcChannelExtensions
                 RetryableStatusCodes =
                 {
                     // Whatever status codes we want to look for
-                    StatusCode.Unauthenticated, StatusCode.NotFound, StatusCode.Unavailable,
+                    StatusCode.Unauthenticated, StatusCode.NotFound, StatusCode.Unavailable
                 }
             }
         };

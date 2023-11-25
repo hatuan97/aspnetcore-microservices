@@ -24,13 +24,16 @@ public static class HangfireExtensions
             throw new Exception("HangFireSettings is not configured properly!");
 
         services.ConfigureHangfireServices(settings);
-        services.AddHangfireServer(serverOptions 
-            => { serverOptions.ServerName = settings.ServerName; });
+        services.AddHangfireServer(serverOptions
+            =>
+        {
+            serverOptions.ServerName = settings.ServerName;
+        });
 
         return services;
     }
 
-    private static IServiceCollection ConfigureHangfireServices(this IServiceCollection services, 
+    private static IServiceCollection ConfigureHangfireServices(this IServiceCollection services,
         HangFireSettings settings)
     {
         if (string.IsNullOrEmpty(settings.Storage.DBProvider))
@@ -80,14 +83,14 @@ public static class HangfireExtensions
                 services.AddHangfire(x =>
                     x.UsePostgreSqlStorage(settings.Storage.ConnectionString));
                 break;
-            
+
             case "mssql":
                 services.AddHangfire(x =>
                     x.UseSqlServerStorage(settings.Storage.ConnectionString));
                 break;
-            
+
             default:
-                throw new Exception( $"HangFire Storage Provider {settings.Storage.DBProvider} is not supported.");
+                throw new Exception($"HangFire Storage Provider {settings.Storage.DBProvider} is not supported.");
         }
 
         return services;

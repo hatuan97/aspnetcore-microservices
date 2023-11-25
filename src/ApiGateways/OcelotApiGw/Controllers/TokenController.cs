@@ -10,7 +10,7 @@ namespace OcelotApiGw.Controllers;
 public class TokenController : ControllerBase
 {
     private readonly ITokenService _tokenService;
-    
+
     public TokenController(ITokenService tokenService)
     {
         _tokenService = tokenService;

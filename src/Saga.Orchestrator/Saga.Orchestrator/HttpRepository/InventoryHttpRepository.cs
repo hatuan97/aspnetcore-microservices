@@ -12,7 +12,7 @@ public class InventoryHttpRepository : IInventoryHttpRepository
     {
         _client = client;
     }
-    
+
     public async Task<string> CreateSalesOrder(SalesProductDto model)
     {
         var response = await _client.PostAsJsonAsync($"inventory/sales/{model.ItemNo}", model);

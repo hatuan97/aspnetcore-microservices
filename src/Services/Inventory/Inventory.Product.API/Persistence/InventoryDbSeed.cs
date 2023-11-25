@@ -13,9 +13,7 @@ public class InventoryDbSeed
         var database = mongoClient.GetDatabase(databaseName);
         var inventoryCollection = database.GetCollection<InventoryEntry>("InventoryEntries");
         if (await inventoryCollection.EstimatedDocumentCountAsync() == 0)
-        {
             await inventoryCollection.InsertManyAsync(GetPreconfiguredInventories());
-        }
     }
 
     private IEnumerable<InventoryEntry> GetPreconfiguredInventories()
@@ -37,7 +35,7 @@ public class InventoryDbSeed
                 DocumentNo = Guid.NewGuid().ToString(),
                 ExternalDocumentNo = Guid.NewGuid().ToString(),
                 DocumentType = EDocumentType.Purchase
-            },
+            }
         };
     }
 }

@@ -25,7 +25,7 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
     builder.Services.AddSwaggerGen();
-    
+
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.
@@ -45,7 +45,7 @@ try
     }
 
     app.UseMiddleware<ErrorWrappingMiddleware>();
-    
+
     // app.UseHttpsRedirection(); //production only
     app.UseRouting();
 
@@ -53,7 +53,7 @@ try
 
     app.UseEndpoints(endpoints =>
     {
-        endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+        endpoints.MapHealthChecks("/hc", new HealthCheckOptions
         {
             Predicate = _ => true,
             ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
@@ -65,7 +65,7 @@ try
 }
 catch (Exception ex)
 {
-    string type = ex.GetType().Name;
+    var type = ex.GetType().Name;
     if (type.Equals("StopTheHostException", StringComparison.Ordinal)) throw;
 
     Log.Fatal(ex, $"Unhandled exception: {ex.Message}");
