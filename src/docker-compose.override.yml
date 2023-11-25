@@ -1,37 +1,36 @@
-version: '3.8'
+version: '3.9'
 
 services:
   #database section
-  
+
   #orderdb: sql server
   orderdb:
     container_name: orderdb
     environment:
       SA_PASSWORD: "Passw0rd!"
       ACCEPT_EULA: "Y"
-    restart: always
     volumes:
-      - sqlserver_data:/var/opt/mssql
+      - tedu_sqlserver_data:/var/opt/mssql
+    restart: always
     ports:
       - "1435:1433"
-  
+
   #productdb: mysql
   productdb:
-    container_name: productdb
-    command: --default-authentication-plugin=mysql_native_password
+    container_name: tedu_productdb
+    command: [ "--default-authentication-plugin=mysql_native_password" ]
     environment:
-      MYSQL_ROOT_PASSWORD: "Passw0rd!"
-      MYSQL_TCP_PORT: 3306
+      MYSQL_ROOT_PASSWORD: Passw0rd!
       MYSQL_DATABASE: ProductDB
     restart: always
     volumes:
-      - mysql_data:/var/lib/mysql
+      - tedu_mysql_data:/var/lib/mysql
     ports:
-      - "3306:3306"
-  
+      - 3306:3306
+
   #customerdb: postgres
   customerdb:
-    container_name: customerdb
+    container_name: tedu_customerdb
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin1234
@@ -40,49 +39,48 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-  
+      - tedu_postgres_data:/var/lib/postgresql/data
+
   #basketdb: redis
   basketdb:
-    container_name: basketdb
+    container_name: tedu_basketdb
     restart: always
     ports:
       - "6379:6379"
-  
+
   #inventorydb: mongo
   inventorydb:
-    container_name: inventorydb
+    container_name: tedu_inventorydb
     restart: always
     ports:
       - "27017:27017"
     volumes:
-      - mongo_data:/data/db
-  
+      - tedu_mongo_data:/data/db
+
   hangfiredb:
-    container_name: hangfiredb
+    container_name: tedu_hangfiredb
     ports:
       - '27018:27017'
     volumes:
-      - hangfire_mongo_data:/data/db
+      - tedu_hangfire_mongo_data:/data/db
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: 'admin'
       MONGO_INITDB_ROOT_PASSWORD: 'admin'
-  
-  #infrastructure section
-  
+
+#infrastructure section
   rabbitmq:
-    container_name: tedurabbitmq
+    container_name: tedu_tedurabbitmq
     restart: always
     ports:
       - "5672:5672"
       - "15672:15672"
     volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
+      - tedu_rabbitmq_data:/var/lib/rabbitmq
     hostname: tedurabbitmq
-  
+
   pgadmin:
-    container_name: pgadmin
+    container_name: tedu_pgadmin
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@tedu.com.vn
       - PGADMIN_DEFAULT_PASSWORD=admin1234
@@ -90,20 +88,20 @@ services:
     ports:
       - "5050:80"
     volumes:
-      - pgadmin_data:/root/.pgadmin
-  
+      - tedu_pgadmin_data:/root/.pgadmin
+
   portainer:
-    container_name: portainer
+    container_name: tedu_portainer
     restart: always
     ports:
-      - "8080:8000"
-      - "9000:9000"
+      - "8082:8000"
+      - "9002:9000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
-  
+      - tedu_portainer_data:/data
+
   elasticsearch:
-    container_name: elasticsearch
+    container_name: tedu_elasticsearch
     environment:
       - xpack.monitoring.enabled=true
       - xpack.watcher.enabled=false
@@ -115,10 +113,10 @@ services:
     ports:
       - "9200:9200"
     volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
-  
+      - tedu_elasticsearch_data:/usr/share/elasticsearch/data
+
   kibana:
-    container_name: kibana
+    container_name: tedu_kibana
     environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
       - ELASTICSEARCH_USERNAME=elastic
@@ -132,10 +130,10 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-  
+
   #microservices api sections
   product.api:
-    container_name: product.api
+    container_name: tedu_product.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -148,9 +146,9 @@ services:
     ports:
       - "6002:80"
     restart: always
-  
+
   customer.api:
-    container_name: customer.api
+    container_name: tedu_customer.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -161,7 +159,7 @@ services:
     ports:
       - "6003:80"
     restart: always
-  
+
   basket.api:
     container_name: basket.api
     environment:
@@ -178,7 +176,7 @@ services:
     ports:
       - "6004:80"
     restart: always
-  
+
   ordering.api:
     container_name: ordering.api
     environment:
@@ -192,7 +190,7 @@ services:
     ports:
       - "6005:80"
     restart: always
-  
+
   inventory.product.api:
     container_name: inventory.product.api
     environment:
@@ -205,7 +203,7 @@ services:
     ports:
       - "6006:80"
     restart: always
-  
+
   inventory.grpc:
     container_name: inventory.grpc
     environment:
@@ -218,7 +216,7 @@ services:
     ports:
       - "6007:80"
     restart: always
-  
+
   apigw.ocelot:
     container_name: apigw.ocelot
     environment:
@@ -270,5 +268,3 @@ services:
       - HealthChecksUI__HealthChecks__6__Uri=http://tedu.identity.api/hc
     ports:
       - "6010:80"
-    
-  
