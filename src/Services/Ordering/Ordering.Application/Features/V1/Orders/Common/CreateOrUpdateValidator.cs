@@ -10,7 +10,7 @@ public class CreateOrUpdateValidator : AbstractValidator<CreateOrUpdateCommand>
             .NotEmpty().WithMessage("{FirstName} is required.")
             .NotNull()
             .MaximumLength(50).WithMessage("{FirstName} must not exceed 50 characters.");
-        
+
         RuleFor(p => p.LastName)
             .NotEmpty().WithMessage("{LastName} is required.")
             .NotNull()
@@ -19,7 +19,7 @@ public class CreateOrUpdateValidator : AbstractValidator<CreateOrUpdateCommand>
         RuleFor(p => p.EmailAddress)
             .EmailAddress().WithMessage("{EmailAddress} is invalid format.")
             .NotEmpty().WithMessage("{EmailAddress} is required.");
-        
+
         RuleFor(p => p.ShippingAddress)
             .NotEmpty().WithMessage("{ShippingAddress} is required.");
 

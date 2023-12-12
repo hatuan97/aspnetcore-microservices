@@ -9,10 +9,11 @@ namespace Ordering.Application.Features.V1.Orders;
 
 public class GetOrdersByUserNameQueryHandler : IRequestHandler<GetOrdersByUserNameQuery, ApiResult<List<OrderDto>>>
 {
+    private const string MethodName = "GetOrdersQueryHandler";
+    private readonly ILogger _logger;
     private readonly IMapper _mapper;
     private readonly IOrderRepository _repository;
-    private readonly ILogger _logger;
-    
+
     public GetOrdersByUserNameQueryHandler(IMapper mapper, IOrderRepository repository, ILogger logger)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -20,15 +21,14 @@ public class GetOrdersByUserNameQueryHandler : IRequestHandler<GetOrdersByUserNa
         _logger = logger ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    private const string MethodName = "GetOrdersQueryHandler";
-    
-    public async Task<ApiResult<List<OrderDto>>> Handle(GetOrdersByUserNameQuery request, CancellationToken cancellationToken)
+    public async Task<ApiResult<List<OrderDto>>> Handle(GetOrdersByUserNameQuery request,
+        CancellationToken cancellationToken)
     {
         _logger.Information($"BEGIN: {MethodName} - Username: {request.UserName}");
-        
+
         var orderEntities = await _repository.GetOrdersByUserNameAsync(request.UserName);
         var orderList = _mapper.Map<List<OrderDto>>(orderEntities);
-        
+
         _logger.Information($"END: {MethodName} - Username: {request.UserName}");
 
         return new ApiSuccessResult<List<OrderDto>>(orderList);

@@ -40,8 +40,8 @@ public class BackgroundJobHttpService
 
         return jobId;
     }
-    
-    public void DeleteReminderCheckoutOrder(string jobId) 
+
+    public void DeleteReminderCheckoutOrder(string jobId)
     {
         var uri = $"{_scheduledJobUrl}/delete/jobId/{jobId}";
         _client.DeleteAsync(uri);

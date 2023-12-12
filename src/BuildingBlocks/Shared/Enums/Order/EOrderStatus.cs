@@ -6,5 +6,5 @@ public enum EOrderStatus
     Pending, //order is pending, not any activities for a period time.
     Paid, //order is paid
     Shipping, //order is on the shipping
-    Fulfilled, //order is fulfilled
+    Fulfilled //order is fulfilled
 }

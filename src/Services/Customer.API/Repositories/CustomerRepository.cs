@@ -11,7 +11,9 @@ public class CustomerRepository : RepositoryQueryBase<Entities.Customer, int, Cu
     {
     }
 
-    public Task<Entities.Customer> GetCustomerByUserNameAsync(string username) =>
-        FindByCondition(x => x.UserName.Equals(username))
+    public Task<Entities.Customer> GetCustomerByUserNameAsync(string username)
+    {
+        return FindByCondition(x => x.UserName.Equals(username))
             .SingleOrDefaultAsync();
+    }
 }

@@ -1,6 +1,5 @@
 using System.Text;
 using Contracts.Identity;
-using IdentityServer4.AccessTokenValidation;
 using Infrastructure.Extensions;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -34,12 +33,9 @@ public static class ServiceExtensions
             .AddCacheManager(x => x.WithDictionaryHandle());
         services.AddTransient<ITokenService, TokenService>();
         // services.AddJwtAuthentication();
-        services.AddSwaggerForOcelot(configuration, x =>
-        {
-            x.GenerateDocsForGatewayItSelf = false;
-        });
+        services.AddSwaggerForOcelot(configuration, x => { x.GenerateDocsForGatewayItSelf = false; });
     }
-    
+
     internal static IServiceCollection AddJwtAuthentication(this IServiceCollection services)
     {
         var settings = services.GetOptions<JwtSettings>(nameof(JwtSettings));

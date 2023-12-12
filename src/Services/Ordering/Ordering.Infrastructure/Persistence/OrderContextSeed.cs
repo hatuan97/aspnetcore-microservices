@@ -6,8 +6,8 @@ namespace Ordering.Infrastructure.Persistence;
 
 public class OrderContextSeed
 {
-    private readonly ILogger _logger;
     private readonly OrderContext _context;
+    private readonly ILogger _logger;
 
     public OrderContextSeed(ILogger logger, OrderContext context)
     {
@@ -19,10 +19,7 @@ public class OrderContextSeed
     {
         try
         {
-            if (_context.Database.IsSqlServer())
-            {
-                await _context.Database.MigrateAsync();
-            }
+            if (_context.Database.IsSqlServer()) await _context.Database.MigrateAsync();
         }
         catch (Exception ex)
         {
@@ -48,15 +45,13 @@ public class OrderContextSeed
     public async Task TrySeedAsync()
     {
         if (!_context.Orders.Any())
-        {
             await _context.Orders.AddRangeAsync(
                 new Order
                 {
                     DocumentNo = Guid.NewGuid(),
                     UserName = "customer1", FirstName = "customer1", LastName = "customer",
-                        EmailAddress = "customer1@local.com",
+                    EmailAddress = "customer1@local.com",
                     ShippingAddress = "Wollongong", InvoiceAddress = "Australia", TotalPrice = 250
                 });
-        }
     }
 }

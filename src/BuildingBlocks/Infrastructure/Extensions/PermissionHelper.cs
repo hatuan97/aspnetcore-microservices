@@ -4,6 +4,8 @@ namespace Infrastructure.Extensions;
 
 public static class PermissionHelper
 {
-    public static string GetPermission(FunctionCode functionCode, CommandCode commandCode) 
-        => string.Join(".", functionCode, commandCode);
+    public static string GetPermission(FunctionCode functionCode, CommandCode commandCode)
+    {
+        return string.Join(".", functionCode, commandCode);
+    }
 }

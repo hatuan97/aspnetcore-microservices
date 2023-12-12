@@ -11,21 +11,21 @@ public static class HostExtensions
         host.ConfigureAppConfiguration((context, config) =>
         {
             var env = context.HostingEnvironment;
-            config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+            config.AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
                 .AddEnvironmentVariables();
         }).UseSerilog(Serilogger.Configure);
     }
-    
+
     public static IHost MigrateDatabase<TContext>(this IHost host, Action<TContext, IServiceProvider> seeder)
-    where TContext : DbContext
+        where TContext : DbContext
     {
         using (var scope = host.Services.CreateScope())
         {
             var services = scope.ServiceProvider;
             var logger = services.GetRequiredService<ILogger<TContext>>();
             var context = services.GetService<TContext>();
-            
+
             try
             {
                 logger.LogInformation("Migrating mysql database.");
@@ -43,7 +43,7 @@ public static class HostExtensions
     }
 
     private static void ExecuteMigrations<TContext>(TContext context)
-    where TContext : DbContext
+        where TContext : DbContext
     {
         context.Database.Migrate();
     }

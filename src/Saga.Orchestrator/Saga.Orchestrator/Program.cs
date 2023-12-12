@@ -1,3 +1,4 @@
+using Infrastructure.Extensions;
 using Saga.Orchestrator;
 using Saga.Orchestrator.Extensions;
 using Serilog;
@@ -19,11 +20,11 @@ try
     builder.Services.ConfigureHttpRepository();
     builder.Services.ConfigureHttpClients();
     builder.Services.AddControllers();
-    builder.Services.ConfigureMassTransit();
+    builder.Services.ConfigureMassTransitWithRabbitMq();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
-    builder.Services.Configure<RouteOptions>(options 
+    builder.Services.Configure<RouteOptions>(options
         => options.LowercaseUrls = true);
     builder.Services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
 
@@ -47,7 +48,7 @@ try
 }
 catch (Exception ex)
 {
-    string type = ex.GetType().Name;
+    var type = ex.GetType().Name;
     if (type.Equals("StopTheHostException", StringComparison.Ordinal)) throw;
 
     Log.Fatal(ex, $"Unhandled exception: {ex.Message}");

@@ -9,15 +9,15 @@ namespace Ordering.Application.Features.V1.Orders;
 
 public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, ApiResult<bool>>
 {
-    private readonly IOrderRepository _orderRepository;
     private readonly ILogger _logger;
+    private readonly IOrderRepository _orderRepository;
 
     public DeleteOrderCommandHandler(IOrderRepository orderRepository, ILogger logger)
     {
         _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
-    
+
     public async Task<ApiResult<bool>> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
     {
         var orderEntity = await _orderRepository.GetByIdAsync(request.Id);

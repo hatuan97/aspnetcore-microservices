@@ -1,8 +1,8 @@
 using System.Text.Json;
+using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Serilog;
 using Shared.SeedWork;
-using ValidationException = Infrastructure.Exceptions.ValidationException;
 
 namespace Infrastructure.Middlewares;
 
@@ -37,7 +37,7 @@ public class ErrorWrappingMiddleware
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
         }
 
-        if (!context.Response.HasStarted && (context.Response.StatusCode == StatusCodes.Status401Unauthorized) ||
+        if ((!context.Response.HasStarted && context.Response.StatusCode == StatusCodes.Status401Unauthorized) ||
             context.Response.StatusCode == StatusCodes.Status403Forbidden)
         {
             context.Response.ContentType = "application/json";
@@ -50,9 +50,9 @@ public class ErrorWrappingMiddleware
         }
 
         else if (!context.Response.HasStarted && context.Response.StatusCode != StatusCodes.Status204NoContent &&
-            context.Response.StatusCode != StatusCodes.Status202Accepted && 
-            context.Response.StatusCode != StatusCodes.Status200OK &&
-            context.Response.ContentType != "text/html; charset=utf-8")
+                 context.Response.StatusCode != StatusCodes.Status202Accepted &&
+                 context.Response.StatusCode != StatusCodes.Status200OK &&
+                 context.Response.ContentType != "text/html; charset=utf-8")
         {
             context.Response.ContentType = "application/json";
 

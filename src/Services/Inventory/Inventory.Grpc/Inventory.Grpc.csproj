@@ -8,20 +8,20 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="6.0.2" />
-        <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
-        <PackageReference Include="Grpc.AspNetCore" Version="2.47.0" />
-        <PackageReference Include="Grpc.AspNetCore.HealthChecks" Version="2.48.0" />
-        <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.48.0" />
-        <PackageReference Include="Grpc.HealthCheck" Version="2.48.0" />
+        <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="6.0.2"/>
+        <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5"/>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.47.0"/>
+        <PackageReference Include="Grpc.AspNetCore.HealthChecks" Version="2.48.0"/>
+        <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.48.0"/>
+        <PackageReference Include="Grpc.HealthCheck" Version="2.48.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Protos" />
+        <Folder Include="Protos"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="Protos\stock.proto" />
+        <None Remove="Protos\stock.proto"/>
         <Protobuf Include="Protos\stock.proto">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <GrpcServices>Server</GrpcServices>
@@ -35,10 +35,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\BuildingBlocks\Common.Logging\Common.Logging.csproj" />
-      <ProjectReference Include="..\..\..\BuildingBlocks\Contracts\Contracts.csproj" />
-      <ProjectReference Include="..\..\..\BuildingBlocks\Infrastructure\Infrastructure.csproj" />
-      <ProjectReference Include="..\..\..\BuildingBlocks\Shared\Shared.csproj" />
+        <ProjectReference Include="..\..\..\BuildingBlocks\Common.Logging\Common.Logging.csproj"/>
+        <ProjectReference Include="..\..\..\BuildingBlocks\Contracts\Contracts.csproj"/>
+        <ProjectReference Include="..\..\..\BuildingBlocks\Infrastructure\Infrastructure.csproj"/>
+        <ProjectReference Include="..\..\..\BuildingBlocks\Shared\Shared.csproj"/>
     </ItemGroup>
 
 </Project>

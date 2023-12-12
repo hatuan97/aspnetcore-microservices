@@ -12,15 +12,15 @@ public class UpdateOrderCommand : CreateOrUpdateCommand, IRequest<ApiResult<Orde
 {
     public long Id { get; private set; }
 
-    public void SetId(long id)
-    {
-        Id = id;
-    }
-   
     public void Mapping(Profile profile)
     {
         profile.CreateMap<UpdateOrderCommand, Order>()
             .ForMember(dest => dest.Status, opts => opts.Ignore())
             .IgnoreAllNonExisting();
+    }
+
+    public void SetId(long id)
+    {
+        Id = id;
     }
 }

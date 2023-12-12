@@ -1,6 +1,7 @@
 using Basket.API;
 using Basket.API.Extensions;
 using HealthChecks.UI.Client;
+using Infrastructure.Extensions;
 using Infrastructure.Middlewares;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
@@ -19,11 +20,11 @@ try
     builder.Services.ConfigureHttpClientService();
     builder.Services.ConfigureRedis();
     builder.Services.ConfigureGrpcService();
-    builder.Services.Configure<RouteOptions>(options 
+    builder.Services.Configure<RouteOptions>(options
         => options.LowercaseUrls = true);
-    
+
     // configure Mass Transit
-    builder.Services.ConfigureMassTransit();
+    builder.Services.ConfigureMassTransitWithRabbitMq();
 
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -32,7 +33,7 @@ try
     builder.Services.ConfigureHealthChecks();
 
     var app = builder.Build();
-    
+
     // Configure the HTTP request pipeline.
     //if (app.Environment.IsDevelopment())
     //{
@@ -48,7 +49,7 @@ try
     app.UseRouting();
     app.UseEndpoints(endpoints =>
     {
-        endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+        endpoints.MapHealthChecks("/hc", new HealthCheckOptions
         {
             Predicate = _ => true,
             ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
@@ -60,7 +61,7 @@ try
 }
 catch (Exception ex)
 {
-    string type = ex.GetType().Name;
+    var type = ex.GetType().Name;
     if (type.Equals("StopTheHostException", StringComparison.Ordinal)) throw;
 
     Log.Fatal(ex, $"Unhandled exception: {ex.Message}");

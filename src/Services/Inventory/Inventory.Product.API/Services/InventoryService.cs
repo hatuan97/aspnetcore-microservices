@@ -26,7 +26,7 @@ public class InventoryService : MongoDbRepository<InventoryEntry>, IInventorySer
             .Find(x => x.ItemNo.Equals(itemNo))
             .ToListAsync();
         var result = _mapper.Map<IEnumerable<InventoryEntryDto>>(entities);
-        
+
         return result;
     }
 
@@ -37,9 +37,9 @@ public class InventoryService : MongoDbRepository<InventoryEntry>, IInventorySer
         if (!string.IsNullOrEmpty(query.SearchTerm))
             filterSearchTerm = Builders<InventoryEntry>.Filter.Eq(s => s.DocumentNo, query.SearchTerm);
 
-        var andFilter = filterItemNo & filterSearchTerm; 
-       
-        var pagedList = await Collection.PaginatedListAsync(andFilter, pageIndex: query.PageIndex, pageNumber: query.PageSize);        
+        var andFilter = filterItemNo & filterSearchTerm;
+
+        var pagedList = await Collection.PaginatedListAsync(andFilter, query.PageIndex, query.PageSize);
         var items = _mapper.Map<IEnumerable<InventoryEntryDto>>(pagedList);
         var result = new PagedList<InventoryEntryDto>(items, pagedList.GetMetaData().TotalItems, query.PageIndex,
             query.PageSize);
@@ -48,7 +48,7 @@ public class InventoryService : MongoDbRepository<InventoryEntry>, IInventorySer
 
     public async Task<InventoryEntryDto> GetByIdAsync(string id)
     {
-        FilterDefinition<InventoryEntry> filter = Builders<InventoryEntry>.Filter.Eq(s => s.Id, id);
+        var filter = Builders<InventoryEntry>.Filter.Eq(s => s.Id, id);
         var entity = await FindAll().Find(filter).FirstOrDefaultAsync();
         var result = _mapper.Map<InventoryEntryDto>(entity);
 
@@ -61,11 +61,11 @@ public class InventoryService : MongoDbRepository<InventoryEntry>, IInventorySer
         {
             ItemNo = itemNo,
             Quantity = model.Quantity,
-            DocumentType = model.DocumentType,
+            DocumentType = model.DocumentType
         };
         await CreateAsync(itemToAdd);
         var result = _mapper.Map<InventoryEntryDto>(itemToAdd);
-        
+
         return result;
     }
 
@@ -80,13 +80,13 @@ public class InventoryService : MongoDbRepository<InventoryEntry>, IInventorySer
         };
         await CreateAsync(itemToAdd);
         var result = _mapper.Map<InventoryEntryDto>(itemToAdd);
-        
+
         return result;
     }
 
     public async Task DeleteByDocumentNoAsync(string documentNo)
     {
-        FilterDefinition<InventoryEntry> filter = Builders<InventoryEntry>.Filter.Eq(s => s.DocumentNo, documentNo);
+        var filter = Builders<InventoryEntry>.Filter.Eq(s => s.DocumentNo, documentNo);
         await Collection.DeleteManyAsync(filter);
     }
 

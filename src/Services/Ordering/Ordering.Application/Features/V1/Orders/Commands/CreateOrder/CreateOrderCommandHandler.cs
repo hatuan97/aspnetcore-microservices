@@ -9,9 +9,10 @@ namespace Ordering.Application.Features.V1.Orders;
 
 public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, ApiResult<long>>
 {
-    private readonly IOrderRepository _orderRepository;
-    private readonly IMapper _mapper;
+    private const string MethodName = "CreateOrderCommandHandler";
     private readonly ILogger _logger;
+    private readonly IMapper _mapper;
+    private readonly IOrderRepository _orderRepository;
 
     public CreateOrderCommandHandler(IOrderRepository orderRepository,
         IMapper mapper,
@@ -22,8 +23,6 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Api
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    private const string MethodName = "CreateOrderCommandHandler";
-
     public async Task<ApiResult<long>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
         _logger.Information($"BEGIN: {MethodName} - Username: {request.UserName}");
@@ -31,8 +30,9 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Api
         _orderRepository.CreateOrder(orderEntity);
         orderEntity.AddedOrder();
         await _orderRepository.SaveChangesAsync();
-        
-        _logger.Information($"Order {orderEntity.Id} - Document No: {orderEntity.DocumentNo} was successfully created.");
+
+        _logger.Information(
+            $"Order {orderEntity.Id} - Document No: {orderEntity.DocumentNo} was successfully created.");
 
         _logger.Information($"END: {MethodName} - Username: {request.UserName}");
         return new ApiSuccessResult<long>(orderEntity.Id);

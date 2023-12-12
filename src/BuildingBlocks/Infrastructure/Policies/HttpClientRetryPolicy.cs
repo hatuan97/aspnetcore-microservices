@@ -19,7 +19,7 @@ public static class HttpClientRetryPolicy
     {
         return builder.AddPolicyHandler(ConfigureLinearHttpRetry(retryCount));
     }
-    
+
     public static IHttpClientBuilder UseExponentialHttpRetryPolicy(this IHttpClientBuilder builder,
         int retryCount = 5)
     {
@@ -31,24 +31,26 @@ public static class HttpClientRetryPolicy
     {
         return builder.AddPolicyHandler(ConfigureCircuitBreakerPolicy(eventsAllowedBeforeBreaking, fromSeconds));
     }
-    
+
     public static IHttpClientBuilder ConfigureTimeoutPolicy(this IHttpClientBuilder builder, int seconds = 5)
     {
         return builder.AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(seconds));
     }
 
-    private static IAsyncPolicy<HttpResponseMessage> ConfigureCircuitBreakerPolicy(int eventsAllowedBeforeBreaking, int fromSeconds)
+    private static IAsyncPolicy<HttpResponseMessage> ConfigureCircuitBreakerPolicy(int eventsAllowedBeforeBreaking,
+        int fromSeconds)
     {
         return HttpPolicyExtensions
             .HandleTransientHttpError()
             .CircuitBreakerAsync(
-                handledEventsAllowedBeforeBreaking: eventsAllowedBeforeBreaking,
-                durationOfBreak: TimeSpan.FromSeconds(fromSeconds)
+                eventsAllowedBeforeBreaking,
+                TimeSpan.FromSeconds(fromSeconds)
             );
     }
 
-    private static IAsyncPolicy<HttpResponseMessage> ConfigureImmediateHttpRetry(int retryCount) =>
-        HttpPolicyExtensions
+    private static IAsyncPolicy<HttpResponseMessage> ConfigureImmediateHttpRetry(int retryCount)
+    {
+        return HttpPolicyExtensions
             .HandleTransientHttpError()
             .Or<TimeoutRejectedException>()
             .RetryAsync(retryCount, (exception, retryCount, context) =>
@@ -56,34 +58,39 @@ public static class HttpClientRetryPolicy
                 Log.Error($"Retry {retryCount} of {context.PolicyKey} at " +
                           $"{context.OperationKey}, due to: {exception.Exception.Message}");
             });
-    
-    private static IAsyncPolicy<HttpResponseMessage> ConfigureLinearHttpRetry(int retryCount) =>
-        HttpPolicyExtensions
+    }
+
+    private static IAsyncPolicy<HttpResponseMessage> ConfigureLinearHttpRetry(int retryCount)
+    {
+        return HttpPolicyExtensions
             .HandleTransientHttpError()
             .Or<TimeoutRejectedException>()
             .WaitAndRetryAsync(retryCount, retryAttempt => TimeSpan.FromSeconds(3),
                 (exception, retryCount, context) =>
-            {
-                Log.Error($"Retry {retryCount} of {context.PolicyKey} at " +
-                          $"{context.OperationKey}, due to: {exception.Exception.Message}");
-            });
-    
-    
-    private static IAsyncPolicy<HttpResponseMessage> ConfigureExponentialHttpRetry(int retryCount) =>
+                {
+                    Log.Error($"Retry {retryCount} of {context.PolicyKey} at " +
+                              $"{context.OperationKey}, due to: {exception.Exception.Message}");
+                });
+    }
+
+
+    private static IAsyncPolicy<HttpResponseMessage> ConfigureExponentialHttpRetry(int retryCount)
+    {
         // In this case will wait for
         //  2 ^ 1 = 2 seconds then
         //  2 ^ 2 = 4 seconds then
         //  2 ^ 3 = 8 seconds then
         //  2 ^ 4 = 16 seconds then
         //  2 ^ 5 = 32 seconds
-        HttpPolicyExtensions
+        return HttpPolicyExtensions
             .HandleTransientHttpError()
             .Or<TimeoutRejectedException>()
-            .WaitAndRetryAsync(retryCount, retryAttempt 
+            .WaitAndRetryAsync(retryCount, retryAttempt
                     => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
                 (exception, retryCount, context) =>
-            {
-                Log.Error($"Retry {retryCount} of {context.PolicyKey} at " +
-                          $"{context.OperationKey}, due to: {exception.Exception.Message}");
-            });
+                {
+                    Log.Error($"Retry {retryCount} of {context.PolicyKey} at " +
+                              $"{context.OperationKey}, due to: {exception.Exception.Message}");
+                });
+    }
 }
