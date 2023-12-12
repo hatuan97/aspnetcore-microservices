@@ -94,9 +94,9 @@ services:
 
 #network section
 networks:
-  tedu_microservices:
+  default:
+    name: tedu_microservices
     external: true
-    driver: bridge
 
 #volumes section
 volumes:
