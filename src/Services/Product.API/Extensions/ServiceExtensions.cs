@@ -13,6 +13,7 @@ using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Product.API.Persistence;
 using Product.API.Repositories;
 using Product.API.Repositories.Interfaces;
+using Serilog;
 using Shared.Configurations;
 
 namespace Product.API.Extensions;
@@ -92,8 +93,9 @@ public static class ServiceExtensions
         var databaseSettings = configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
         if (databaseSettings == null || string.IsNullOrEmpty(databaseSettings.ConnectionString))
             throw new ArgumentNullException("Connection string is not configured.");
-
+        
         var builder = new MySqlConnectionStringBuilder(databaseSettings.ConnectionString);
+        Log.Debug(builder.ConnectionString);
         services.AddDbContext<ProductContext>(m => m.UseMySql(builder.ConnectionString,
             ServerVersion.AutoDetect(builder.ConnectionString), e =>
             {
@@ -115,8 +117,8 @@ public static class ServiceExtensions
     private static void ConfigureHealthChecks(this IServiceCollection services)
     {
         var databaseSettings = services.GetOptions<DatabaseSettings>(nameof(DatabaseSettings));
-        services.AddHealthChecks()
-            .AddMySql(databaseSettings.ConnectionString, "MySql Health", HealthStatus.Degraded);
+        services.AddHealthChecks().AddMySql(
+            connectionString: databaseSettings.ConnectionString, "MySql Health", failureStatus: HealthStatus.Degraded);
     }
 
     public static void ConfigureSwagger(this IServiceCollection services)

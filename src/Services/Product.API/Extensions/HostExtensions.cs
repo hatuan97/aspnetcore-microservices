@@ -25,7 +25,7 @@ public static class HostExtensions
             var services = scope.ServiceProvider;
             var logger = services.GetRequiredService<ILogger<TContext>>();
             var context = services.GetService<TContext>();
-
+            
             try
             {
                 logger.LogInformation("Migrating mysql database.");

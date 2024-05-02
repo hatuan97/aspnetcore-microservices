@@ -5,7 +5,7 @@ services:
 
   #orderdb: sql server
   orderdb:
-    container_name: orderdb
+    container_name: tedu_orderdb
     environment:
       SA_PASSWORD: "Passw0rd!"
       ACCEPT_EULA: "Y"
@@ -26,7 +26,7 @@ services:
     volumes:
       - tedu_mysql_data:/var/lib/mysql
     ports:
-      - 3306:3306
+      - 3307:3306
 
   #customerdb: postgres
   customerdb:
@@ -137,7 +137,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - "DatabaseSettings:ConnectionString=Server=productdb;Port=3306;Database=ProductDb;Uid=root;Pwd=Passw0rd!"
+      - "DatabaseSettings:ConnectionString=Server=tedu_productdb;Database=ProductDB;Uid=root;Pwd=Passw0rd!"
       - "ApiConfiguration:ApiBaseUrl=http://product.api"
       - "ApiConfiguration:IdentityServerBaseUrl=http://localhost:6001"
       - "ApiConfiguration:IssuerUri=http://tedu.identity.api"
@@ -152,8 +152,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - "DatabaseSettings:ConnectionString=Server=customerdb;Port=5432;Database=CustomerDb;User Id=admin;Password=admin1234"
-      - "HangFireSettings:Storage:ConnectionString=Server=customerdb;Port=5432;Database=CustomerDb;User Id=admin;Password=admin1234"
+      - "DatabaseSettings:ConnectionString=Server=tedu_customerdb;Database=CustomerDb;User Id=admin;Password=admin1234"
+      - "HangFireSettings:Storage:ConnectionString=Server=tedu_customerdb;Port=5432;Database=CustomerDb;User Id=admin;Password=admin1234"
     depends_on:
       - customerdb
     ports:
@@ -182,7 +182,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - "DatabaseSettings:ConnectionString=Server=orderdb;Database=OrderDb;User Id=sa;Password=Passw0rd!;Multipleactiveresultsets=true"
+      - "DatabaseSettings:ConnectionString=Server=tedu_orderdb,1435;Database=OrderDb;User Id=sa;Password=Passw0rd!;Trusted_Connection=True;Multipleactiveresultsets=true"
       - "EventBusSettings:HostAddress=amqp://guest:guest@tedurabbitmq:5672"
     depends_on:
       - orderdb

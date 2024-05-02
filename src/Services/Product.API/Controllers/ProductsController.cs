@@ -42,7 +42,7 @@ public class ProductsController : ControllerBase
     #region CRUD
 
     [HttpGet]
-    [ClaimRequirement(FunctionCode.PRODUCT, CommandCode.VIEW)]
+    // [ClaimRequirement(FunctionCode.PRODUCT, CommandCode.VIEW)]
     public async Task<IActionResult> GetProducts()
     {
         var products = await _repository.GetProductsAsync();
