@@ -29,7 +29,7 @@ try
 
 // Configure the HTTP request pipeline.
     if (app.Environment.IsProduction())
-    { 
+    {
         app.UseHttpsRedirection();
     }
 
@@ -41,20 +41,18 @@ try
     app.UseAuthorization();
     app.UseEndpoints(endpoints =>
     {
-        endpoints.MapGet("/", context =>
+        endpoints.MapGet("/",  context =>
         {
             // await context.Response.WriteAsync($"Hello TEDU members! This is {builder.Environment.ApplicationName}");
             context.Response.Redirect("swagger/index.html");
             return Task.CompletedTask;
         });
     });
-
+    
     app.UseSwaggerForOcelotUI(
         opt =>
         {
             opt.PathToSwaggerGenerator = "/swagger/docs";
-            opt.OAuthClientId("tedu_microservices_swagger");
-            opt.DisplayRequestDuration();
         });
 
     await app.UseOcelot();

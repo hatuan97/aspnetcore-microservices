@@ -19,12 +19,12 @@ public class ProductRepository : RepositoryBase<CatalogProduct, long, ProductCon
         return await FindAll().ToListAsync();
     }
 
-    public Task<CatalogProduct> GetProductAsync(long id)
+    public Task<CatalogProduct?> GetProductAsync(long id)
     {
         return GetByIdAsync(id);
     }
 
-    public Task<CatalogProduct> GetProductByNoAsync(string productNo)
+    public Task<CatalogProduct?> GetProductByNoAsync(string productNo)
     {
         return FindByCondition(x => x.No.Equals(productNo)).SingleOrDefaultAsync();
     }

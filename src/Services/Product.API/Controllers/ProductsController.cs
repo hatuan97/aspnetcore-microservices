@@ -31,7 +31,7 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> GetProductByNo([Required] string productNo)
     {
         var product = await _repository.GetProductByNoAsync(productNo);
-        if (product == null) return NotFound();
+        if (product is null) return NotFound();
 
         var result = _mapper.Map<ProductDto>(product);
         return Ok(result);
@@ -42,7 +42,7 @@ public class ProductsController : ControllerBase
     #region CRUD
 
     [HttpGet]
-    // [ClaimRequirement(FunctionCode.PRODUCT, CommandCode.VIEW)]
+    [ClaimRequirement(FunctionCode.PRODUCT, CommandCode.VIEW)]
     public async Task<IActionResult> GetProducts()
     {
         var products = await _repository.GetProductsAsync();
@@ -51,7 +51,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("{id:long}")]
-    [ClaimRequirement(FunctionCode.PRODUCT, CommandCode.VIEW)]
+    // [ClaimRequirement(FunctionCode.PRODUCT, CommandCode.VIEW)]
     public async Task<IActionResult> GetProduct([Required] long id)
     {
         var product = await _repository.GetProductAsync(id);
