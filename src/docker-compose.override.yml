@@ -247,6 +247,19 @@ services:
     ports:
       - "6008:80"
     restart: always
+  
+  saga.api:
+    container_name: saga.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - "EventBusSettings:HostAddress=amqp://guest:guest@tedurabbitmq:5672"
+      - "ServiceUrls:Basket=http://basket.api"
+      - "ServiceUrls:Orders=http://ordering.api"
+      - "ServiceUrls:Inventory=http://inventory.product.api"
+    ports:
+      - "6009:80"
+    restart: always
 
   webstatus:
     container_name: webstatus

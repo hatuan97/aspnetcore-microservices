@@ -85,6 +85,12 @@ services:
     build:
       context: .
       dockerfile: Services/Hangfire.API/Dockerfile
+  
+  saga.api:
+    image: ${DOCKER_REGISTRY-}saga-api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Saga.Orchestrator/Saga.Orchestrator/Dockerfile
 
   webstatus:
     image: ${DOCKER_REGISTRY-}webstatus:${PLATFORM:-linux}-${TAG:-latest}
