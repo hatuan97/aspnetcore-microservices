@@ -117,8 +117,7 @@ docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d --remo
 
 ## Recommended Courses:
 
-- Xây dựng hệ thống với kiến trúc
-  Micro-service: [https://tedu.com.vn/khoa-hoc](https://tedu.com.vn/course-ref/49/C5D7O1.html)
+- Xây dựng hệ thống với kiến trúc Micro-service: [https://tedu.com.vn/khoa-hoc](https://tedu.com.vn/course-ref/49/C5D7O1.html)
 - Terraform Mastery trên Cloud Azure: Từ Cơ bản đến Nâng cao: [https://tedu.com.vn/khoa-hoc](https://tedu.com.vncourse-ref/52/C5D7O1.html)
 - Làm chủ Docker để chinh phục DevOps:  [https://tedu.com.vn/khoa-hoc](https://tedu.com.vn/course-ref/42/C5D7O1.html)
 - Tedu Exam course (MongoDb, DDD, CQRS, Identity
