@@ -33,7 +33,7 @@ services:
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.7
-#
+
   kibana:
     image: docker.elastic.co/kibana/kibana:7.17.7
 

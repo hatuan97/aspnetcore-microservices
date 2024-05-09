@@ -182,7 +182,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - "DatabaseSettings:ConnectionString=Server=tedu_orderdb,1435;Database=OrderDb;User Id=sa;Password=Passw0rd!;Trusted_Connection=True;Multipleactiveresultsets=true"
+      - "DatabaseSettings:ConnectionString=Server=tedu_orderdb;Database=OrderDb;User Id=sa;Password=Passw0rd!;Multipleactiveresultsets=true;TrustServerCertificate=true;Connection Timeout=30;"
       - "EventBusSettings:HostAddress=amqp://guest:guest@tedurabbitmq:5672"
     depends_on:
       - orderdb
