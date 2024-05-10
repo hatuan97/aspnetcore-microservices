@@ -24,6 +24,15 @@ public class PagedList<T> : List<T>
     {
         return _metaData;
     }
+    
+    public string GetPaginationHeader()
+    {
+        return _metaData switch
+        {
+            { TotalItems: 0 } => string.Empty,
+            _ => new SerializeService().Serialize(_metaData)
+        };
+    }
 
     public static async Task<PagedList<T>> ToPagedList(IQueryable<T> source, int pageNumber, int pageSize)
     {

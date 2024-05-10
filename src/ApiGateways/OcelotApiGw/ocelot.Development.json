@@ -80,10 +80,10 @@
           "Port": 5002
         }
       ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      },
+//      "AuthenticationOptions": {
+//        "AuthenticationProviderKey": "Bearer",
+//        "AllowedScopes": []
+//      },
       "SwaggerKey": "product-service"
     },
     {
@@ -164,10 +164,10 @@
           "Port": 5002
         }
       ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      },
+//      "AuthenticationOptions": {
+//        "AuthenticationProviderKey": "Bearer",
+//        "AllowedScopes": []
+//      },
       "SwaggerKey": "product-service"
     },
     // Basket api: http://localhost:5004/api/baskets

@@ -11,4 +11,9 @@ public static class SystemConstants
         public const string FirstName = "firstName";
         public const string LastName = "lastName";
     }
+
+    public static class Common
+    {
+        public const string PaginationHeader = "X-Pagination";
+    }
 }

@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using AutoMapper;
+using Infrastructure.Exceptions;
 using Infrastructure.Identity.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Product.API.Entities;
+using Product.API.Extensions;
 using Product.API.Repositories.Interfaces;
 using Shared.Common.Constants;
 using Shared.DTOs.Product;
@@ -42,11 +44,15 @@ public class ProductsController : ControllerBase
     #region CRUD
 
     [HttpGet]
-    // [ClaimRequirement(FunctionCode.PRODUCT, CommandCode.VIEW)]
-    public async Task<IActionResult> GetProducts()
+    public async Task<IActionResult> GetProducts([FromQuery] ProductParameters parameters)
     {
-        var products = await _repository.GetProductsAsync();
-        var result = _mapper.Map<IEnumerable<ProductDto>>(products);
+        if (parameters.ValidPriceRange is false)
+            throw new BadRequestException("Invalid Price range. Max Price can't be less than min Price.");
+        
+        var pagedResult = await _repository.GetProductsAsync(parameters, false);
+        Response.Headers.Add(SystemConstants.Common.PaginationHeader, pagedResult.GetPaginationHeader());
+        var result = _mapper.Map<IEnumerable<ProductDto>>(pagedResult);
+        
         return Ok(result);
     }
 
