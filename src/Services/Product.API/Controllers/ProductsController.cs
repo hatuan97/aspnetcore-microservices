@@ -12,7 +12,7 @@ namespace Product.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize("Bearer")]
+[AllowAnonymous]
 public class ProductsController : ControllerBase
 {
     private readonly IMapper _mapper;
@@ -27,7 +27,7 @@ public class ProductsController : ControllerBase
     #region Additional Resources
 
     [HttpGet("get-product-by-no/{productNo}")]
-    [ClaimRequirement(FunctionCode.PRODUCT, CommandCode.VIEW)]
+    // [ClaimRequirement(FunctionCode.PRODUCT, CommandCode.VIEW)]
     public async Task<IActionResult> GetProductByNo([Required] string productNo)
     {
         var product = await _repository.GetProductByNoAsync(productNo);
