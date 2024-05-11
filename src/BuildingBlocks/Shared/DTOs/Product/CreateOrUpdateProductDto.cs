@@ -14,4 +14,6 @@ public abstract class CreateOrUpdateProductDto
     public string Description { get; set; }
 
     public decimal Price { get; set; }
+
+    public string ImageUrl { get; set; } = "https://placehold.co/256x256/png";
 }

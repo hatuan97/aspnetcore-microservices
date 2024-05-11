@@ -19,4 +19,6 @@ public class CatalogProduct : EntityAuditBase<long>
     [Column(TypeName = "text")] public string Description { get; set; }
 
     [Column(TypeName = "decimal(12,2)")] public decimal Price { get; set; }
+    
+    public string ImageUrl { get; set; }
 }
