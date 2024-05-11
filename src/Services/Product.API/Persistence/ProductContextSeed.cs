@@ -28,7 +28,7 @@ public class ProductContextSeed
                 Description =
                     "Pizza Margherita is a classic Italian pizza topped with tomatoes, mozzarella cheese, and basil leaves. It's a simple yet delicious dish loved by many.",
                 Price = 12.99m,
-                ImageUrl = "https://unsplash.com/photos/pizza-with-green-leaf-vegetable-JspLKUauwSI"
+                ImageUrl = "https://images.unsplash.com/photo-1598023696416-0193a0bcd302?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8UGl6emElMjBNYXJnaGVyaXRhfGVufDB8fDB8fHww"
             },
             new()
             {
