@@ -44,7 +44,7 @@ public class InventoryController : ControllerBase
     public async Task<ActionResult<IEnumerable<InventoryEntryDto>>> GetInventoryById([Required] string id)
     {
         var result = await _inventoryService.GetByIdAsync(id);
-        if (result == null) return NotFound();
+        if (result is null) return NotFound();
 
         return Ok(result);
     }
@@ -87,7 +87,7 @@ public class InventoryController : ControllerBase
     public async Task<IActionResult> DeleteById([Required] string id)
     {
         var entity = await _inventoryService.GetByIdAsync(id);
-        if (entity == null) return NotFound();
+        if (entity is null) return NotFound();
         await _inventoryService.DeleteAsync(id);
         return NoContent();
     }
