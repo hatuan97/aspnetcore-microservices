@@ -44,7 +44,7 @@ public class SagaOrderManager : ISagaOrderManager<BasketCheckoutDto, OrderRespon
         orderStateMachine.Configure(EOrderTransactionState.NotStarted)
             .PermitDynamic(EOrderAction.GetBasket, () =>
             {
-                cart = _basketHttpRepository.GetBasket(input.UserName).Result;
+                cart = _basketHttpRepository.GetBasket(input.GetUserName()).Result;
                 return cart != null ? EOrderTransactionState.BasketGot : EOrderTransactionState.BasketGetFailed;
             });
 
@@ -75,9 +75,9 @@ public class SagaOrderManager : ISagaOrderManager<BasketCheckoutDto, OrderRespon
             {
                 var salesOrder = new SalesOrderDto
                 {
-                    OrderNo = addedOrder.DocumentNo,
                     SaleItems = _mapper.Map<List<SaleItemDto>>(cart.Items)
                 };
+                salesOrder.SetOrderNo(addedOrder!.DocumentNo);
                 inventoryDocumentNo =
                     _inventoryHttpRepository.CreateOrderSale(addedOrder.DocumentNo, salesOrder).Result;
                 return inventoryDocumentNo != null
@@ -89,7 +89,7 @@ public class SagaOrderManager : ISagaOrderManager<BasketCheckoutDto, OrderRespon
         orderStateMachine.Configure(EOrderTransactionState.InventoryUpdated)
             .PermitDynamic(EOrderAction.DeleteBasket, () =>
             {
-                var result = _basketHttpRepository.DeleteBasket(input.UserName).Result;
+                var result = _basketHttpRepository.DeleteBasket(input.GetUserName()).Result;
                 return result ? EOrderTransactionState.BasketDeleted : EOrderTransactionState.InventoryUpdateFailed;
             }).OnEntry(() => orderStateMachine.Fire(EOrderAction.DeleteBasket));
 
@@ -97,7 +97,7 @@ public class SagaOrderManager : ISagaOrderManager<BasketCheckoutDto, OrderRespon
         orderStateMachine.Configure(EOrderTransactionState.InventoryUpdateFailed)
             .PermitDynamic(EOrderAction.DeleteInventory, () =>
             {
-                RollbackOrder(input.UserName, inventoryDocumentNo, orderId);
+                RollbackOrder(input.GetUserName(), inventoryDocumentNo, orderId);
                 return EOrderTransactionState.InventoryRollback;
             }).OnEntry(() => orderStateMachine.Fire(EOrderAction.DeleteInventory));
 

@@ -99,7 +99,7 @@ public class InventoryService : MongoDbRepository<InventoryEntry>, IInventorySer
             {
                 DocumentNo = documentNo,
                 ItemNo = saleItem.ItemNo,
-                ExternalDocumentNo = model.OrderNo,
+                ExternalDocumentNo = model.GetOrderNo(),
                 Quantity = saleItem.Quantity * -1,
                 DocumentType = saleItem.DocumentType
             };

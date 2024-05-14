@@ -5,7 +5,7 @@ services:
 
   #orderdb: sql server
   orderdb:
-    container_name: tedu_orderdb
+    container_name: tedu_order_db
     environment:
       SA_PASSWORD: "Passw0rd!"
       ACCEPT_EULA: "Y"
@@ -17,11 +17,11 @@ services:
 
   #productdb: mysql
   productdb:
-    container_name: tedu_productdb
+    container_name: tedu_product_db
     command: [ "--default-authentication-plugin=mysql_native_password" ]
     environment:
-      MYSQL_ROOT_PASSWORD: Passw0rd!
-      MYSQL_DATABASE: ProductDB
+      MYSQL_ROOT_PASSWORD: "Passw0rd"
+      MYSQL_DATABASE: ProductDb
     restart: always
     volumes:
       - tedu_mysql_data:/var/lib/mysql
@@ -30,7 +30,7 @@ services:
 
   #customerdb: postgres
   customerdb:
-    container_name: tedu_customerdb
+    container_name: tedu_customer_db
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin1234
@@ -43,7 +43,7 @@ services:
 
   #basketdb: redis
   basketdb:
-    container_name: tedu_basketdb
+    container_name: tedu_basket_db
     restart: always
     ports:
       - "6379:6379"
@@ -137,7 +137,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - "DatabaseSettings:ConnectionString=Server=tedu_productdb;Database=ProductDB;Uid=root;Pwd=Passw0rd!"
+      - "DatabaseSettings:ConnectionString=Server=tedu_product_db;Database=ProductDb;Uid=root;Pwd=Passw0rd"
       - "ApiConfiguration:ApiBaseUrl=http://product.api"
       - "ApiConfiguration:IdentityServerBaseUrl=http://localhost:6001"
       - "ApiConfiguration:IssuerUri=http://tedu.identity.api"
@@ -152,8 +152,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - "DatabaseSettings:ConnectionString=Server=tedu_customerdb;Database=CustomerDb;User Id=admin;Password=admin1234"
-      - "HangFireSettings:Storage:ConnectionString=Server=tedu_customerdb;Port=5432;Database=CustomerDb;User Id=admin;Password=admin1234"
+      - "DatabaseSettings:ConnectionString=Server=tedu_customer_db;Database=CustomerDb;User Id=admin;Password=admin1234"
+      - "HangFireSettings:Storage:ConnectionString=Server=tedu_customer_db;Port=5432;Database=CustomerDb;User Id=admin;Password=admin1234"
     depends_on:
       - customerdb
     ports:
@@ -182,7 +182,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - "DatabaseSettings:ConnectionString=Server=tedu_orderdb;Database=OrderDb;User Id=sa;Password=Passw0rd!;Multipleactiveresultsets=true;TrustServerCertificate=true;Connection Timeout=30;"
+      - "DatabaseSettings:ConnectionString=Server=tedu_order_db;Database=OrderDb;User Id=sa;Password=Passw0rd!;Multipleactiveresultsets=true;TrustServerCertificate=true;Connection Timeout=30;"
       - "EventBusSettings:HostAddress=amqp://guest:guest@tedurabbitmq:5672"
     depends_on:
       - orderdb

@@ -6,7 +6,14 @@ public class BasketCheckoutDto
 {
     private string _invoiceAddress;
 
-    [Required] public string UserName { get; set; }
+    public string GetUserName() => _userName;
+
+    private string _userName;
+
+    public void SetUserName(string username)
+    {
+        _userName = username;
+    }
 
     public decimal TotalPrice { get; set; }
 

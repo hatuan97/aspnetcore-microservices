@@ -24,13 +24,45 @@ public class InventoryDbSeed
             {
                 Quantity = 10,
                 DocumentNo = Guid.NewGuid().ToString(),
-                ItemNo = "Lotus",
+                ItemNo = "PizzaMargherita",
                 ExternalDocumentNo = Guid.NewGuid().ToString(),
                 DocumentType = EDocumentType.Purchase
             },
             new()
             {
-                ItemNo = "Cadillac",
+                ItemNo = "ChickenParmesan",
+                Quantity = 10,
+                DocumentNo = Guid.NewGuid().ToString(),
+                ExternalDocumentNo = Guid.NewGuid().ToString(),
+                DocumentType = EDocumentType.Purchase
+            },
+            new()
+            {
+                ItemNo = "CaesarSalad",
+                Quantity = 10,
+                DocumentNo = Guid.NewGuid().ToString(),
+                ExternalDocumentNo = Guid.NewGuid().ToString(),
+                DocumentType = EDocumentType.Purchase
+            },
+            new()
+            {
+                ItemNo = "SushiRoll",
+                Quantity = 10,
+                DocumentNo = Guid.NewGuid().ToString(),
+                ExternalDocumentNo = Guid.NewGuid().ToString(),
+                DocumentType = EDocumentType.Purchase
+            },
+            new()
+            {
+                ItemNo = "PastaCarbonara",
+                Quantity = 10,
+                DocumentNo = Guid.NewGuid().ToString(),
+                ExternalDocumentNo = Guid.NewGuid().ToString(),
+                DocumentType = EDocumentType.Purchase
+            },
+            new()
+            {
+                ItemNo = "ChocolateCake",
                 Quantity = 10,
                 DocumentNo = Guid.NewGuid().ToString(),
                 ExternalDocumentNo = Guid.NewGuid().ToString(),

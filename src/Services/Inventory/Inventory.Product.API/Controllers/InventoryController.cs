@@ -71,10 +71,10 @@ public class InventoryController : ControllerBase
 
     [HttpPost("sales/order-no/{orderNo}", Name = "SalesOrder")]
     [ProducesResponseType(typeof(CreatedSalesOrderSuccessDto), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<CreatedSalesOrderSuccessDto>> SalesOrder([Required] string orderNo,
+    public async Task<ActionResult<CreatedSalesOrderSuccessDto>> SalesOrder([Required]string orderNo,
         [FromBody] SalesOrderDto model)
     {
-        model.OrderNo = orderNo;
+        model.SetOrderNo(orderNo);
         var documentNo = await _inventoryService.SalesOrderAsync(model);
         var result = new CreatedSalesOrderSuccessDto(documentNo);
         return Ok(result);

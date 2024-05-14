@@ -25,15 +25,20 @@ public static class ServiceExtensions
     {
         var jwtSettings = configuration.GetSection(nameof(JwtSettings))
             .Get<JwtSettings>();
-        services.AddSingleton(jwtSettings);
+        if (jwtSettings is not null)
+            services.AddSingleton(jwtSettings);
 
         var databaseSettings = configuration.GetSection(nameof(DatabaseSettings))
             .Get<DatabaseSettings>();
+        if (databaseSettings is null || string.IsNullOrEmpty(databaseSettings.ConnectionString))
+            throw new ArgumentNullException("Connection string is not configured.");
+        
         services.AddSingleton(databaseSettings);
 
         var apiConfiguration = configuration.GetSection(nameof(ApiConfiguration))
             .Get<ApiConfiguration>();
-        services.AddSingleton(apiConfiguration);
+        if (apiConfiguration is not null)
+            services.AddSingleton(apiConfiguration);
 
         return services;
     }
@@ -92,15 +97,15 @@ public static class ServiceExtensions
     {
         var databaseSettings = configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
         if (databaseSettings == null || string.IsNullOrEmpty(databaseSettings.ConnectionString))
-            throw new ArgumentNullException("Connection string is not configured.");
+            throw new ArgumentNullException($"{nameof(databaseSettings)} is not configured properly");
         
         var builder = new MySqlConnectionStringBuilder(databaseSettings.ConnectionString);
-        Log.Debug(builder.ConnectionString);
         services.AddDbContext<ProductContext>(m => m.UseMySql(builder.ConnectionString,
             ServerVersion.AutoDetect(builder.ConnectionString), e =>
             {
                 e.MigrationsAssembly("Product.API");
                 e.SchemaBehavior(MySqlSchemaBehavior.Ignore);
+                e.CommandTimeout(30);
             }));
 
         return services;
@@ -118,7 +123,11 @@ public static class ServiceExtensions
     {
         var databaseSettings = services.GetOptions<DatabaseSettings>(nameof(DatabaseSettings));
         services.AddHealthChecks().AddMySql(
-            connectionString: databaseSettings.ConnectionString, "MySql Health", failureStatus: HealthStatus.Degraded);
+            healthQuery: "SELECT 1;",
+            connectionString: databaseSettings.ConnectionString,
+            name: "MySql Health",
+            failureStatus: HealthStatus.Unhealthy
+        );
     }
 
     public static void ConfigureSwagger(this IServiceCollection services)

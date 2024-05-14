@@ -10,10 +10,7 @@ public record PurchaseProductDto
 
     public int Quantity { get; set; }
 
-    public string GetItemNo()
-    {
-        return _itemNo;
-    }
+    public string GetItemNo() => _itemNo;
 
     public void SetItemNo(string itemNo)
     {

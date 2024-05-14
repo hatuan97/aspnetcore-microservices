@@ -22,7 +22,7 @@ public class CheckoutController : ControllerBase
     public OrderResponse CheckoutOrder([Required] string username,
         [FromBody] BasketCheckoutDto model)
     {
-        model.UserName = username;
+        model.SetUserName(username);
         var result = _sagaOrderManager.CreateOrder(model);
         return result;
     }
