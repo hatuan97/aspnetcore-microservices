@@ -80,10 +80,6 @@
           "Port": 5002
         }
       ],
-//      "AuthenticationOptions": {
-//        "AuthenticationProviderKey": "Bearer",
-//        "AllowedScopes": []
-//      },
       "SwaggerKey": "product-service"
     },
     {
@@ -104,9 +100,9 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       },
-      //      "RouteClaimsRequirement": {
-      //        "Role": "Admin"
-      //      },
+//      "RouteClaimsRequirement": {
+//        "Role": "Administrator"
+//      },
       "SwaggerKey": "product-service"
     },
     {
@@ -163,6 +159,9 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       },
+//      "RouteClaimsRequirement": {
+//        "Role": "Administrator"
+//      },
       "SwaggerKey": "product-service"
     },
     {
