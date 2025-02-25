@@ -1,4 +1,4 @@
-## Tedu AspnetCore Microservices:
+## Pet Project about AspnetCore Microservices:
 
 A large numerous developers have heard about microservices and how it is the next big thing. In any case, for some
 developers I have coporate with, microservices is simply one more popular expression like DevOps. I have been dealing
