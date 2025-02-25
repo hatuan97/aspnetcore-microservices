@@ -17,8 +17,8 @@ public static class CustomerContextSeed
         CreateCustomer(customerContext, "customer2", "customer2",
                 "customer", "customer2@local.com")
             .GetAwaiter().GetResult();
-        CreateCustomer(customerContext, "tedu", "Tedu",
-                "Test", "tedu@yopmail.com")
+        CreateCustomer(customerContext, "pet", "pet",
+                "Test", "pet@yopmail.com")
             .GetAwaiter().GetResult();
 
         return host;

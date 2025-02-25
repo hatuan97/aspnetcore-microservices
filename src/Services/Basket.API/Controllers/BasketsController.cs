@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Text.Json;
 using AutoMapper;
 using Basket.API.Entities;
 using Basket.API.GrpcServices;
 using Basket.API.Repositories.Interfaces;
+using Confluent.Kafka;
 using EventBus.Messages.IntegrationEvents.Events;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +20,18 @@ public class BasketsController : ControllerBase
 {
     private readonly IBasketRepository _basketRepository;
     private readonly IMapper _mapper;
-    private readonly IPublishEndpoint _publishEndpoint;
+    //private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IProducer<Null, string> _kafkaProducer;
     private readonly StockItemGrpcService _stockItemGrpcService;
 
-    public BasketsController(IBasketRepository basketRepository, IMapper mapper, IPublishEndpoint publishEndpoint,
+    public BasketsController(IBasketRepository basketRepository, IMapper mapper,
+        //IPublishEndpoint publishEndpoint,
+        IProducer<Null, string> kafkaProducer,
         StockItemGrpcService stockItemGrpcService)
     {
         _basketRepository = basketRepository ?? throw new ArgumentNullException(nameof(basketRepository));
-        _publishEndpoint = publishEndpoint ?? throw new ArgumentNullException(nameof(publishEndpoint));
+        //_publishEndpoint = publishEndpoint ?? throw new ArgumentNullException(nameof(publishEndpoint));
+        _kafkaProducer = kafkaProducer ?? throw new ArgumentNullException(nameof(kafkaProducer));
         _stockItemGrpcService = stockItemGrpcService ?? throw new ArgumentNullException(nameof(stockItemGrpcService));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
@@ -81,7 +87,18 @@ public class BasketsController : ControllerBase
         //publish checkout event to EventBus Message
         var eventMessage = _mapper.Map<BasketCheckoutEvent>(basketCheckout);
         eventMessage.TotalPrice = basket.TotalPrice;
-        await _publishEndpoint.Publish(eventMessage);
+        //await _publishEndpoint.Publish(eventMessage);
+
+        var eventMessageJson = JsonSerializer.Serialize(eventMessage);
+
+        // Produce the message to Kafka topic "basket-checkout-topic"
+        var message = new Message<Null, string>
+        {
+            Value = eventMessageJson
+        };
+
+        // Send the message to Kafka
+        await _kafkaProducer.ProduceAsync("basket-checkout-topic", message);
 
         return Accepted();
     }

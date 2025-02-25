@@ -1,9 +1,9 @@
 {
   "GlobalConfiguration": {
-    "BaseUrl": "https://apigw-tedu.azurewebsites.net"
+    "BaseUrl": "https://apigw-pet.azurewebsites.net"
   },
   "Routes": [
-    // identity api: https://identity-tedu.azurewebsites.net/api
+    // identity api: https://identity-pet.azurewebsites.net/api
     {
       "UpstreamPathTemplate": "/permissions/roles/{roleId}",
       "UpstreamHttpMethod": [
@@ -14,7 +14,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "identity-tedu.azurewebsites.net"
+          "Host": "identity-pet.azurewebsites.net"
         }
       ],
       "SwaggerKey": "identity-service"
@@ -28,7 +28,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "identity-tedu.azurewebsites.net"
+          "Host": "identity-pet.azurewebsites.net"
         }
       ],
       "SwaggerKey": "identity-service"
@@ -42,12 +42,12 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "identity-tedu.azurewebsites.net"
+          "Host": "identity-pet.azurewebsites.net"
         }
       ],
       "SwaggerKey": "identity-service"
     },
-    // Customer api: https://customer-tedu.azurewebsites.net/api
+    // Customer api: https://customer-pet.azurewebsites.net/api
     {
       "UpstreamPathTemplate": "/customers/{username}",
       "UpstreamHttpMethod": [
@@ -57,12 +57,12 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "customer-tedu.azurewebsites.net"
+          "Host": "customer-pet.azurewebsites.net"
         }
       ],
       "SwaggerKey": "customer-service"
     },
-    // Product api: https://product-tedu.azurewebsites.net/api/products
+    // Product api: https://product-pet.azurewebsites.net/api/products
     {
       "UpstreamPathTemplate": "/products/{id}",
       "UpstreamHttpMethod": [
@@ -72,7 +72,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "product-tedu.azurewebsites.net"
+          "Host": "product-pet.azurewebsites.net"
         }
       ],
       "AuthenticationOptions": {
@@ -91,7 +91,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "product-tedu.azurewebsites.net"
+          "Host": "product-pet.azurewebsites.net"
         }
       ],
       "AuthenticationOptions": {
@@ -113,7 +113,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "product-tedu.azurewebsites.net"
+          "Host": "product-pet.azurewebsites.net"
         }
       ],
       "RateLimitOptions": {
@@ -153,7 +153,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "product-tedu.azurewebsites.net"
+          "Host": "product-pet.azurewebsites.net"
         }
       ],
       "AuthenticationOptions": {
@@ -162,7 +162,7 @@
       },
       "SwaggerKey": "product-service"
     },
-    // Basket api: https://basket-tedu.azurewebsites.net/api/baskets
+    // Basket api: https://basket-pet.azurewebsites.net/api/baskets
     {
       "UpstreamPathTemplate": "/baskets/{username}",
       "UpstreamHttpMethod": [
@@ -173,7 +173,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "basket-tedu.azurewebsites.net"
+          "Host": "basket-pet.azurewebsites.net"
         }
       ],
       "SwaggerKey": "basket-service"
@@ -187,7 +187,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "basket-tedu.azurewebsites.net"
+          "Host": "basket-pet.azurewebsites.net"
         }
       ],
       "SwaggerKey": "basket-service"
@@ -201,12 +201,12 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "basket-tedu.azurewebsites.net"
+          "Host": "basket-pet.azurewebsites.net"
         }
       ],
       "SwaggerKey": "basket-service"
     },
-    // Order api: https://order-tedu.azurewebsites.net/api/{version}/orders
+    // Order api: https://order-pet.azurewebsites.net/api/{version}/orders
     {
       "UpstreamPathTemplate": "/{version}/orders/{id}",
       "UpstreamHttpMethod": [
@@ -218,7 +218,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "order-tedu.azurewebsites.net"
+          "Host": "order-pet.azurewebsites.net"
         }
       ],
       "SwaggerKey": "order-service"
@@ -232,12 +232,12 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "order-tedu.azurewebsites.net"
+          "Host": "order-pet.azurewebsites.net"
         }
       ],
       "SwaggerKey": "order-service"
     },
-    // Inventory API : https://inventory-product-tedu.azurewebsites.net
+    // Inventory API : https://inventory-product-pet.azurewebsites.net
     {
       "UpstreamPathTemplate": "/inventory/items/{itemNo}",
       "UpstreamHttpMethod": [
@@ -247,7 +247,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "inventory-product-tedu.azurewebsites.net"
+          "Host": "inventory-product-pet.azurewebsites.net"
         }
       ],
       "SwaggerKey": "inventory-service"
@@ -261,7 +261,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "inventory-product-tedu.azurewebsites.net"
+          "Host": "inventory-product-pet.azurewebsites.net"
         }
       ],
       "SwaggerKey": "inventory-service"
@@ -276,7 +276,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "inventory-product-tedu.azurewebsites.net"
+          "Host": "inventory-product-pet.azurewebsites.net"
         }
       ],
       "SwaggerKey": "inventory-service"
@@ -290,7 +290,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "inventory-product-tedu.azurewebsites.net"
+          "Host": "inventory-product-pet.azurewebsites.net"
         }
       ],
       "SwaggerKey": "inventory-service"
@@ -303,7 +303,7 @@
         {
           "Name": "Identity API",
           "Version": "v1",
-          "Url": "https://identity-tedu.azurewebsites.net/swagger/v1/swagger.json"
+          "Url": "https://identity-pet.azurewebsites.net/swagger/v1/swagger.json"
         }
       ]
     },
@@ -313,7 +313,7 @@
         {
           "Name": "Product API",
           "Version": "v1",
-          "Url": "https://product-tedu.azurewebsites.net/swagger/v1/swagger.json"
+          "Url": "https://product-pet.azurewebsites.net/swagger/v1/swagger.json"
         }
       ]
     },
@@ -323,7 +323,7 @@
         {
           "Name": "Customer API",
           "Version": "v1",
-          "Url": "https://customer-tedu.azurewebsites.net/swagger/v1/swagger.json"
+          "Url": "https://customer-pet.azurewebsites.net/swagger/v1/swagger.json"
         }
       ]
     },
@@ -333,7 +333,7 @@
         {
           "Name": "Basket API",
           "Version": "v1",
-          "Url": "https://basket-tedu.azurewebsites.net/swagger/v1/swagger.json"
+          "Url": "https://basket-pet.azurewebsites.net/swagger/v1/swagger.json"
         }
       ]
     },
@@ -343,7 +343,7 @@
         {
           "Name": "Order API",
           "Version": "v1",
-          "Url": "https://order-tedu.azurewebsites.net/swagger/v1/swagger.json"
+          "Url": "https://order-pet.azurewebsites.net/swagger/v1/swagger.json"
         }
       ]
     },
@@ -353,7 +353,7 @@
         {
           "Name": "Inventory API",
           "Version": "v1",
-          "Url": "https://inventory-product-tedu.azurewebsites.net/swagger/v1/swagger.json"
+          "Url": "https://inventory-product-pet.azurewebsites.net/swagger/v1/swagger.json"
         }
       ]
     }

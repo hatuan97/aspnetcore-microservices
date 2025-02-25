@@ -5,32 +5,32 @@ services:
 
   #orderdb: sql server
   orderdb:
-    container_name: tedu_order_db
+    container_name: pet_order_db
     environment:
       SA_PASSWORD: "Passw0rd!"
       ACCEPT_EULA: "Y"
     volumes:
-      - tedu_sqlserver_data:/var/opt/mssql
+      - pet_sqlserver_data:/var/opt/mssql
     restart: always
     ports:
       - "1435:1433"
 
   #productdb: mysql
   productdb:
-    container_name: tedu_product_db
+    container_name: pet_product_db
     command: [ "--default-authentication-plugin=mysql_native_password" ]
     environment:
       MYSQL_ROOT_PASSWORD: "Passw0rd"
       MYSQL_DATABASE: ProductDb
     restart: always
     volumes:
-      - tedu_mysql_data:/var/lib/mysql
+      - pet_mysql_data:/var/lib/mysql
     ports:
       - 3307:3306
 
   #customerdb: postgres
   customerdb:
-    container_name: tedu_customer_db
+    container_name: pet_customer_db
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin1234
@@ -39,30 +39,30 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - tedu_postgres_data:/var/lib/postgresql/data
+      - pet_postgres_data:/var/lib/postgresql/data
 
   #basketdb: redis
   basketdb:
-    container_name: tedu_basket_db
+    container_name: pet_basket_db
     restart: always
     ports:
       - "6379:6379"
 
   #inventorydb: mongo
   inventorydb:
-    container_name: tedu_inventorydb
+    container_name: pet_inventorydb
     restart: always
     ports:
       - "27017:27017"
     volumes:
-      - tedu_mongo_data:/data/db
+      - pet_mongo_data:/data/db
 
   hangfiredb:
-    container_name: tedu_hangfiredb
+    container_name: pet_hangfiredb
     ports:
       - '27018:27017'
     volumes:
-      - tedu_hangfire_mongo_data:/data/db
+      - pet_hangfire_mongo_data:/data/db
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: 'admin'
@@ -70,38 +70,38 @@ services:
 
 #infrastructure section
   rabbitmq:
-    container_name: tedu_tedurabbitmq
+    container_name: pet_petrabbitmq
     restart: always
     ports:
       - "5672:5672"
       - "15672:15672"
     volumes:
-      - tedu_rabbitmq_data:/var/lib/rabbitmq
-    hostname: tedurabbitmq
+      - pet_rabbitmq_data:/var/lib/rabbitmq
+    hostname: petrabbitmq
 
   pgadmin:
-    container_name: tedu_pgadmin
+    container_name: pet_pgadmin
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@tedu.com.vn
+      - PGADMIN_DEFAULT_EMAIL=admin@pet.com.vn
       - PGADMIN_DEFAULT_PASSWORD=admin1234
     restart: always
     ports:
       - "5050:80"
     volumes:
-      - tedu_pgadmin_data:/root/.pgadmin
+      - pet_pgadmin_data:/root/.pgadmin
 
   portainer:
-    container_name: tedu_portainer
+    container_name: pet_portainer
     restart: always
     ports:
       - "8082:8000"
       - "9002:9000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - tedu_portainer_data:/data
+      - pet_portainer_data:/data
 
   elasticsearch:
-    container_name: tedu_elasticsearch
+    container_name: pet_elasticsearch
     environment:
       - xpack.monitoring.enabled=true
       - xpack.watcher.enabled=false
@@ -113,10 +113,10 @@ services:
     ports:
       - "9200:9200"
     volumes:
-      - tedu_elasticsearch_data:/usr/share/elasticsearch/data
+      - pet_elasticsearch_data:/usr/share/elasticsearch/data
 
   kibana:
-    container_name: tedu_kibana
+    container_name: pet_kibana
     environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
       - ELASTICSEARCH_USERNAME=elastic
@@ -133,14 +133,14 @@ services:
 
   #microservices api sections
   product.api:
-    container_name: tedu_product.api
+    container_name: pet_product.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - "DatabaseSettings:ConnectionString=Server=tedu_product_db;Database=ProductDb;Uid=root;Pwd=Passw0rd"
+      - "DatabaseSettings:ConnectionString=Server=pet_product_db;Database=ProductDb;Uid=root;Pwd=Passw0rd"
       - "ApiConfiguration:ApiBaseUrl=http://product.api"
       - "ApiConfiguration:IdentityServerBaseUrl=http://localhost:6001"
-      - "ApiConfiguration:IssuerUri=http://tedu.identity.api"
+      - "ApiConfiguration:IssuerUri=http://pet.identity.api"
     depends_on:
       - productdb
     ports:
@@ -148,12 +148,12 @@ services:
     restart: always
 
   customer.api:
-    container_name: tedu_customer.api
+    container_name: pet_customer.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - "DatabaseSettings:ConnectionString=Server=tedu_customer_db;Database=CustomerDb;User Id=admin;Password=admin1234"
-      - "HangFireSettings:Storage:ConnectionString=Server=tedu_customer_db;Port=5432;Database=CustomerDb;User Id=admin;Password=admin1234"
+      - "DatabaseSettings:ConnectionString=Server=pet_customer_db;Database=CustomerDb;User Id=admin;Password=admin1234"
+      - "HangFireSettings:Storage:ConnectionString=Server=pet_customer_db;Port=5432;Database=CustomerDb;User Id=admin;Password=admin1234"
     depends_on:
       - customerdb
     ports:
@@ -166,7 +166,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - "CacheSettings:ConnectionString=basketdb:6379"
-      - "EventBusSettings:HostAddress=amqp://guest:guest@tedurabbitmq:5672"
+      - "EventBusSettings:HostAddress=amqp://guest:guest@petrabbitmq:5672"
       - "GrpcSettings:StockUrl=http://inventory.grpc"
       - BackgroundJobSettings:HangfireUrl=http://hangfire.api
       - BackgroundJobSettings:CheckoutUrl=http://localhost:6001
@@ -182,8 +182,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - "DatabaseSettings:ConnectionString=Server=tedu_order_db;Database=OrderDb;User Id=sa;Password=Passw0rd!;Multipleactiveresultsets=true;TrustServerCertificate=true;Connection Timeout=30;"
-      - "EventBusSettings:HostAddress=amqp://guest:guest@tedurabbitmq:5672"
+      - "DatabaseSettings:ConnectionString=Server=pet_order_db;Database=OrderDb;User Id=sa;Password=Passw0rd!;Multipleactiveresultsets=true;TrustServerCertificate=true;Connection Timeout=30;"
+      - "EventBusSettings:HostAddress=amqp://guest:guest@petrabbitmq:5672"
     depends_on:
       - orderdb
       - rabbitmq
@@ -225,7 +225,7 @@ services:
       - GlobalConfiguration:BaseUrl=http://apigw.ocelot
       - ApiConfiguration:ApiBaseUrl=http://apigw.ocelot
       - ApiConfiguration:IdentityServerBaseUrl=http://localhost:6001
-      - ApiConfiguration:IssuerUri=http://tedu.identity.api
+      - ApiConfiguration:IssuerUri=http://pet.identity.api
     depends_on:
       - customer.api
       - basket.api
@@ -253,7 +253,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - "EventBusSettings:HostAddress=amqp://guest:guest@tedurabbitmq:5672"
+      - "EventBusSettings:HostAddress=amqp://guest:guest@petrabbitmq:5672"
       - "ServiceUrls:Basket=http://basket.api"
       - "ServiceUrls:Orders=http://ordering.api"
       - "ServiceUrls:Inventory=http://inventory.product.api"
@@ -278,6 +278,6 @@ services:
       - HealthChecksUI__HealthChecks__5__Name=Scheduled Job Health Check
       - HealthChecksUI__HealthChecks__5__Uri=http://hangfire.api/hc
       - HealthChecksUI__HealthChecks__6__Name=Identity Health Check
-      - HealthChecksUI__HealthChecks__6__Uri=http://tedu.identity.api/hc
+      - HealthChecksUI__HealthChecks__6__Uri=http://pet.identity.api/hc
     ports:
       - "6010:80"

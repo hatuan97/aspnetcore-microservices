@@ -21,6 +21,7 @@ try
     builder.Services.ConfigureHttpClients();
     builder.Services.AddControllers();
     builder.Services.ConfigureMassTransitWithRabbitMq();
+    builder.Services.ConfigureKafkaProducer();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();

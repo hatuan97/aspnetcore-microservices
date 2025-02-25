@@ -26,6 +26,9 @@ try
     // configure Mass Transit
     builder.Services.ConfigureMassTransitWithRabbitMq();
 
+    // switch to Kafka
+    builder.Services.ConfigureKafkaProducer();
+
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();

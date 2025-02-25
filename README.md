@@ -6,11 +6,6 @@ with various tasks involving microservices for somewhat more than a year now and
 hypothesis and the thoughts behind the idea. I built this course to help developers narrow down your challenges with my
 reality experiences.
 
-- Microservice Course: [https://tedu.com.vn/khoa-hoc](https://tedu.com.vn/course-ref/49/C5D7O1.html)
-- Facebook Group: [https://www.facebook.com/groups/](https://www.facebook.com/groups/learnmicroservices)
-- Slides: [Slide](https://github.com/rickykiet83/tedu-aspnetcore-microservices-training/blob/feat/customer-api/resources/Xay%20dung%20he%20thong%20voi%20Microservice.pdf)
-- Identity Server: [Identity Server repo](https://github.com/rickykiet83/tedu-microserivces.idp)
-
 ## Prepare environment
 
 * Install dotnet core version in file `global.json`
@@ -68,6 +63,7 @@ docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d --remo
 - Portainer: http://localhost:9000 - username: admin ; pass: "{your-password}"
 - Kibana: http://localhost:5601 - username: elastic ; pass: admin
 - RabbitMQ: http://localhost:15672 - username: guest ; pass: guest
+- Kafka: http://localhost:9092 - username: admin ; pass: admin
 
 2. Using Visual Studio 2022
 
@@ -115,22 +111,6 @@ docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d --remo
 - https://docs.microsoft.com/en-us/aspnet/web-api/overview/advanced/httpclient-message-handlers
 - https://github.com/dotnet-architecture/eShopOnContainers
 
-## Recommended Courses:
-
-- Xây dựng hệ thống với kiến trúc Micro-service: [https://tedu.com.vn/khoa-hoc](https://tedu.com.vn/course-ref/49/C5D7O1.html)
-- Terraform Mastery trên Cloud Azure: Từ Cơ bản đến Nâng cao: [https://tedu.com.vn/khoa-hoc](https://tedu.com.vncourse-ref/52/C5D7O1.html)
-- Làm chủ Docker để chinh phục DevOps:  [https://tedu.com.vn/khoa-hoc](https://tedu.com.vn/course-ref/42/C5D7O1.html)
-- Tedu Exam course (MongoDb, DDD, CQRS, Identity
-  Server):  [https://tedu.com.vn/khoa-hoc](https://tedu.com.vn/course-ref/43/C5D7O1.html)
-- Authentication và Authorization nâng
-  cao:  [https://tedu.com.vn/khoa-hoc](https://tedu.com.vn/course-ref/36/C5D7O1.html)
-- Xây dựng ứng dụng web với ASP.NET Core Web API + Identity Server +
-  Angular:  [https://tedu.com.vn/khoa-hoc](https://tedu.com.vn/course-ref/35/C5D7O1.htm)
-- Phát triển Web App với .NET 6 (ABP Framework &
-  Angular):  [https://tedu.com.vn/khoa-hoc](https://tedu.com.vn/course-ref/50/C5D7O1.html)
-- Triển khai CI/CD với Azure DevOps:  [https://tedu.com.vn/khoa-hoc](https://tedu.com.vn/course-ref/37/C5D7O1.html)
-- Thiết kế RESTful API với ASP.NET Core và Dapper
-  ORM: [https://tedu.com.vn/khoa-hoc](https://tedu.com.vn/course-ref/24/C5D7O1.html)
 
 ## Docker Commands: (cd into folder contain file `docker-compose.yml`, `docker-compose.override.yml`)
 

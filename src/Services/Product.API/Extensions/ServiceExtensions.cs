@@ -155,8 +155,8 @@ public static class ServiceExtensions
                         AuthorizationUrl = new Uri($"{configuration.IdentityServerBaseUrl}/connect/authorize"),
                         Scopes = new Dictionary<string, string>
                         {
-                            { "tedu_microservices_api.read", "Tedu Microservices API Read Scope" },
-                            { "tedu_microservices_api.write", "Tedu Microservices API Write Scope" }
+                            { "pet_microservices_api.read", "Pet Microservices API Read Scope" },
+                            { "pet_microservices_api.write", "Pet Microservices API Write Scope" }
                         }
                     }
                 }
@@ -175,8 +175,8 @@ public static class ServiceExtensions
                     },
                     new List<string>
                     {
-                        "tedu_microservices_api.read",
-                        "tedu_microservices_api.write"
+                        "pet_microservices_api.read",
+                        "pet_microservices_api.write"
                     }
                 }
             });

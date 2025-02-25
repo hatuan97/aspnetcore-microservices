@@ -101,28 +101,28 @@ services:
 #network section
 networks:
   default:
-    name: tedu_microservices
+    name: pet_microservices
     external: true
 
 #volumes section
 volumes:
-  tedu_sqlserver_data:
-    name: tedu_sqlserver_data
-  tedu_mysql_data:
-    name: tedu_mysql_data
-  tedu_postgres_data:
-    name: tedu_postgres_data
-  tedu_portainer_data:
-    name: tedu_portainer_data
-  tedu_elasticsearch_data:
-    name: tedu_elasticsearch_data
-  tedu_jaeger_data:
-    name: tedu_jaeger_data
-  tedu_mongo_data:
-    name: tedu_mongo_data
-  tedu_hangfire_mongo_data:
-    name: tedu_hangfire_mongo_data
-  tedu_pgadmin_data:
-    name: tedu_pgadmin_data
-  tedu_rabbitmq_data:
-    name: tedu_rabbitmq_data
+  pet_sqlserver_data:
+    name: pet_sqlserver_data
+  pet_mysql_data:
+    name: pet_mysql_data
+  pet_postgres_data:
+    name: pet_postgres_data
+  pet_portainer_data:
+    name: pet_portainer_data
+  pet_elasticsearch_data:
+    name: pet_elasticsearch_data
+  pet_jaeger_data:
+    name: pet_jaeger_data
+  pet_mongo_data:
+    name: pet_mongo_data
+  pet_hangfire_mongo_data:
+    name: pet_hangfire_mongo_data
+  pet_pgadmin_data:
+    name: pet_pgadmin_data
+  pet_rabbitmq_data:
+    name: pet_rabbitmq_data

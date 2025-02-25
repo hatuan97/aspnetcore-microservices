@@ -43,7 +43,7 @@ try
     {
         endpoints.MapGet("/",  context =>
         {
-            // await context.Response.WriteAsync($"Hello TEDU members! This is {builder.Environment.ApplicationName}");
+            // await context.Response.WriteAsync($"Hello! This is {builder.Environment.ApplicationName}");
             context.Response.Redirect("swagger/index.html");
             return Task.CompletedTask;
         });

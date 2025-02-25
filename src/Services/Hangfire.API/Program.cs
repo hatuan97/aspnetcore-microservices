@@ -17,7 +17,7 @@ try
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
-    builder.Services.AddTeduHangfireService();
+    builder.Services.AddHangfireService();
     builder.Services.ConfigureServices();
     builder.Services.ConfigureHealthChecks();
 

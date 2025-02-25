@@ -11,7 +11,7 @@ public static class ApplicationExtensions
         app.UseSwagger();
         app.UseSwaggerUI(c =>
         {
-            c.OAuthClientId("tedu_microservices_swagger");
+            c.OAuthClientId("pet_microservices_swagger");
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "Product API");
             c.DisplayRequestDuration();
         });

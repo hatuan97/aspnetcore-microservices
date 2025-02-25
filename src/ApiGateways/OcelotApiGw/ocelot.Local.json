@@ -359,7 +359,7 @@
         {
           "Name": "Identity API",
           "Version": "v1",
-          "Url": "http://tedu.identity.api/swagger/v1/swagger.json"
+          "Url": "http://pet.identity.api/swagger/v1/swagger.json"
         }
       ]
     },
